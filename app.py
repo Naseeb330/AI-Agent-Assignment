@@ -1,5 +1,5 @@
 
-import gradio as gr
+
 from google import genai
 
 print("Libraries loaded successfully")
