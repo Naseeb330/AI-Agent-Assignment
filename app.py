@@ -1,4 +1,4 @@
-!pip install -q gradio google-genai
+
 import gradio as gr
 from google import genai
 
