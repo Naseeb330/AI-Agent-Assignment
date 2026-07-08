@@ -8,7 +8,7 @@ import os
 # Apni purani API key wali line ko mita kar yeh likhein:
 api_key = os.environ.get("GEMINI_API_KEY")
 
-client = genai.Client(api_key=API_KEY)
+client = genai.Client(api_key=api_key)  # 'api_key' ko chote harfo (lowercase) mein likhein
 
 print("API connected")
 response = client.models.generate_content(
