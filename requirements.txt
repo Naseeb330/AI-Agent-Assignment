@@ -1,2 +1,2 @@
-google-generativeai
-gradio
+streamlit
+google-genai
