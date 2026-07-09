@@ -27,6 +27,7 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
         
+        # Prompt mein aapka naam end par strictly fix kar diya gaya hai
         prompt = f"""
 You are an AI assistant for Pakistan's electricity complaint system.
 
@@ -52,6 +53,12 @@ Concerned Company
 Priority
 Estimated Time
 Recommendation
+
+At the very end of your response, you MUST sign off exactly like this:
+We appreciate your patience and understanding as we work to restore your power.
+Sincerely,
+AI Assistant Pakistan's Electricity Complaint System
+By: Naseeb U Rahman
 """
         response = client_fresh.models.generate_content(
             model="gemini-2.5-flash",
@@ -96,7 +103,7 @@ with col2:
             result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
             st.info(result)
 
-# --- FOOTER (Aakhir mein aapka naam) ---
+# --- FOOTER ---
 st.markdown("""
 <br><br><br>
 <hr>
