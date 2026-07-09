@@ -166,46 +166,53 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
 # ==============================================================================
 # 💻 PAGE 2: MAIN COMPLAINT DASHBOARD
 # ==============================================================================
-# --- 1. Function ko FILE KE TOP par rakhein (Imports ke baad) ---
+# --- 1. AI Complaint Function (Top par define karein) ---
 def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
     api_key_fresh = os.environ.get("GEMINI_API_KEY")
     if not api_key_fresh: return "Error: API Key nahi mili!"
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
-        prompt = f"You are an AI assistant for Pakistan's electricity complaint system. Customer Details: Name: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally. Heading and description text on SAME line. Double spacing BETWEEN sections. Sincerely, AI Assistant, By: Naseeb U Rahman"
-        # MODEL UPDATE: gemini-2.5-flash ki jagah 1.5-flash use karein
+        prompt = f"Customer: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally."
+        # Correct model name
         response = client_fresh.models.generate_content(model="gemini-1.5-flash", contents=prompt)
         return response.text
     except Exception as e: return f"Maazrat: {str(e)}"
 
-# --- 2. Ab Dashboard ka block (Ek hi baar) ---
+# --- 2. Page Switch Function ---
+def switch_page(page_name):
+    st.session_state.page = page_name
+    st.rerun()
+
+# --- 3. Initialize Session State ---
+if 'page' not in st.session_state:
+    st.session_state.page = "landing"
+
+# --- 4. Page Logic (if/elif structure) ---
+if st.session_state.page == "landing":
+    st.title("⚡ WAPDA Complaint Portal")
+    if st.button("Go to Dashboard"):
+        switch_page("dashboard")
+
+# AB YAHAN 'elif' sahi kaam karega kyunki upar 'if' majood hai
 elif st.session_state.page == "dashboard":
     top_col1, top_col2 = st.columns([8, 2])
     with top_col1:
         st.markdown("<h2 style='margin:0; color:#1c83e1;'>⚡ Dashboard Control Panel</h2>", unsafe_allow_html=True)
     with top_col2:
-        if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
-    st.markdown("<hr style='margin-top:5px; margin-bottom:20px;'>", unsafe_allow_html=True)
+        if st.button("🏠 Home"): switch_page("landing")
+    
+    st.markdown("<hr>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
-    
     with col1:
         st.subheader("📋 Consumer Form")
         name_input = st.text_input("👤 Consumer Name")
         consumer_id_input = st.text_input("🆔 Consumer ID")
         phone_input = st.text_input("📞 Mobile Number")
         city_input = st.selectbox("City", options=["Quetta", "Lahore", "Islamabad", "Karachi"])
-        
         complaint_type_input = st.selectbox("Type", options=[
-            "Power Outage (Load Shedding / Line Fault)", 
-            "Low Voltage / High Voltage Fluctuations",
-            "Transformer Breakdown / Oil Leakage / Sparking", 
-            "Defective Meter / Fast Running Meter / Screen Blank", 
-            "Billing Issues (Wrong Reading / Double Charging / Installments Request)",
-            "Power Theft Reporting (Kunda system / Illegal bypass)",
-            "New Connection Delay / Pole Installation Request"
+            "Power Outage", "Low Voltage", "Transformer Breakdown", "Billing Issues"
         ])
-        
         complaint_input = st.text_area("Complaint Details", height=150)
         submit = st.button("📤 Register Complaint", use_container_width=True)
 
