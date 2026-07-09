@@ -2,7 +2,7 @@ from google import genai
 import os
 import streamlit as st
 
-# --- STREAMLIT UI DESIGN (Gradio Layout ki tarah) ---
+# --- STREAMLIT UI DESIGN ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
 
 # Center Aligned Headers
@@ -17,7 +17,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Shikayat darj karne ka function jo har baar fresh connection banata hai
+# Shikayat darj karne ka function
 def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
     api_key_fresh = os.environ.get("GEMINI_API_KEY")
     
@@ -27,7 +27,7 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
         
-        # Prompt mein aapka naam end par strictly fix kar diya gaya hai
+        # Is prompt mein sign-off message ko neutral aur dynamic kar diya gaya hai
         prompt = f"""
 You are an AI assistant for Pakistan's electricity complaint system.
 
@@ -44,7 +44,7 @@ Complaint Type:
 Complaint:
 {complaint}
 
-Reply professionally.
+Reply professionally based on the specific complaint type provided.
 
 Mention:
 
@@ -55,7 +55,7 @@ Estimated Time
 Recommendation
 
 At the very end of your response, you MUST sign off exactly like this:
-We appreciate your patience and understanding as we work to restore your power.
+We appreciate your patience and understanding as we work to resolve your issue.
 Sincerely,
 AI Assistant Pakistan's Electricity Complaint System
 By: Naseeb U Rahman
@@ -68,7 +68,7 @@ By: Naseeb U Rahman
     except Exception as e:
         return f"Maazrat, koi takneeki masla aa gaya hai: {str(e)}"
 
-# Two-Column Layout (Left pe form, Right pe output)
+# Two-Column Layout
 col1, col2 = st.columns(2)
 
 # --- LEFT COLUMN (Form Inputs) ---
