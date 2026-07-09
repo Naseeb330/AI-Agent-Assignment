@@ -14,126 +14,128 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: ULTIMATE SMART LANDING PAGE WITH SPINNING NEON CIRCLES
+# 🎯 PAGE 1: RE-ENGINEERED LANDING PAGE (TEXT INSIDE COLORED SPINNING CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Advanced CSS Injection for Moving Neon Boarders, Gradient Fonts and Layouts
+    # Custom Global CSS for Center Alignment & Glowing Animated Layout
     st.markdown("""
     <style>
-    /* Main Container Center Alignment */
+    /* Centering everything on screen */
     .landing-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 80vh;
+        min-height: 75vh;
         text-align: center;
         width: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    /* Rang-Birangi Gradient Main Title */
+    /* Centralized Gradient Title */
     .main-heading {
-        background: linear-gradient(45deg, #ff4b4b, #1c83e1, #2e7d32, #ef6c00);
+        background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 50px;
-        font-weight: 900;
-        margin-bottom: 5px;
-        letter-spacing: 1px;
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0 auto 5px auto;
+        text-align: center;
     }
     
     .sub-heading {
-        color: #666;
-        font-size: 22px;
+        color: #555;
+        font-size: 20px;
         font-weight: 500;
         margin-bottom: 60px;
+        text-align: center;
     }
 
-    /* Outer Wrapper to Create the Continuous Spinning Circular Border Effect */
-    .circle-wrapper {
+    /* Container for managing spinning border effect */
+    .spin-box {
         position: relative;
-        width: 200px;
-        height: 200px;
-        background: linear-gradient(0deg, transparent, transparent, var(--clr-neon));
+        width: 190px;
+        height: 190px;
+        background: linear-gradient(0deg, transparent, transparent, var(--clr-border));
         border-radius: 50%;
-        animation: animateCircle 2.5s linear infinite; /* Musalsal ghoomne wali animation */
+        animation: rotateBorder 2s linear infinite;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto;
     }
-    
-    /* Inner dark background circle masking */
-    .circle-wrapper::before {
-        content: '';
-        position: absolute;
-        inset: 6px;
-        background: #11141a; /* Deep dark background inside circle */
-        border-radius: 50%;
-        z-index: 1;
-    }
 
-    @keyframes animateCircle {
+    @keyframes rotateBorder {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Force Streamlit button to override layout, become perfectly circular, and sit inside the animation layer */
+    /* The Secret Mask: Forces Streamlit buttons to take deep colors and brings text inside */
+    div.stButton {
+        position: absolute !important;
+        top: 6px !important;
+        left: 6px !important;
+        right: 6px !important;
+        bottom: 6px !important;
+        z-index: 5 !important;
+    }
+
     div.stButton > button {
-        position: relative !important;
-        z-index: 10 !important; /* Above the mask layer */
-        background: transparent !important; /* Let deep black show through */
+        background-color: var(--clr-bg) !important; /* Deep colored circle backgrounds */
         color: white !important;
         font-size: 18px !important;
         font-weight: bold !important;
         border-radius: 50% !important;
-        width: 184px !important;
-        height: 184px !important;
+        width: 178px !important;
+        height: 178px !important;
         border: none !important;
         cursor: pointer !important;
         display: flex !important;
+        flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        line-height: 1.3 !important;
-        transition: all 0.3s ease-in-out !important;
+        line-height: 1.4 !important;
+        box-shadow: inset 0 0 15px rgba(0,0,0,0.5) !important;
+        animation: none !important; /* Prevents text from spinning */
+        transform: none !important;
     }
 
+    /* Hover State Smooth Scaling */
     div.stButton > button:hover {
-        transform: scale(1.05) !important;
-        color: var(--clr-neon) !important;
-        text-shadow: 0 0 10px var(--clr-neon);
+        background-color: var(--clr-border) !important;
+        box-shadow: 0 0 20px var(--clr-border) !important;
+        color: #fff !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Main structure wrapper
+    # Master Layout Design
     st.markdown('<div class="landing-container">', unsafe_allow_html=True)
     st.markdown('<div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-heading">AI Powered Electricity Complaint System</div>', unsafe_allow_html=True)
     
+    # 3 Column View grid
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        # Blue Glowing Spin Circle
-        st.markdown('<div class="circle-wrapper" style="--clr-neon: #1c83e1;">', unsafe_allow_html=True)
-        if st.button("📝\n\nEasy\nComplaint"):
+        # 1. Easy Complaint - Deep Blue Circle
+        st.markdown('<div class="spin-box" style="--clr-border: #1c83e1; --clr-bg: #0f4c81;">', unsafe_allow_html=True)
+        if st.button("📝\nEasy\nComplaint", key="btn_comp"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        # Green Glowing Spin Circle
-        st.markdown('<div class="circle-wrapper" style="--clr-neon: #2e7d32;">', unsafe_allow_html=True)
-        if st.button("👤\n\nAbout\nMe"):
+        # 2. About Me - Deep Green Circle
+        st.markdown('<div class="spin-box" style="--clr-border: #2e7d32; --clr-bg: #1b4d22;">', unsafe_allow_html=True)
+        if st.button("👤\nAbout\nMe", key="btn_me"):
             switch_page("aboutme")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        # Orange Glowing Spin Circle
-        st.markdown('<div class="circle-wrapper" style="--clr-neon: #ef6c00;">', unsafe_allow_html=True)
-        if st.button("🌐\n\nAbout\nWebsite"):
+        # 3. About Website - Deep Orange Circle
+        st.markdown('<div class="spin-box" style="--clr-border: #ef6c00; --clr-bg: #a34b00;">', unsafe_allow_html=True)
+        if st.button("🌐\nAbout\nWebsite", key="btn_web"):
             switch_page("aboutweb")
         st.markdown('</div>', unsafe_allow_html=True)
         
@@ -141,7 +143,7 @@ if st.session_state.page == "landing":
 
 
 # ==============================================================================
-# 💻 PAGE 2: DASHBOARD
+# 💻 PAGE 2: MAIN COMPLAINT DASHBOARD
 # ==============================================================================
 elif st.session_state.page == "dashboard":
     top_col1, top_col2 = st.columns([8, 2])
@@ -182,7 +184,7 @@ elif st.session_state.page == "dashboard":
 
 
 # ==============================================================================
-# 👤 PAGE 3: STYLISH CENTRALIZED ABOUT ME
+# 👤 PAGE 3: CENTRALIZED ABOUT ME
 # ==============================================================================
 elif st.session_state.page == "aboutme":
     top_col1, top_col2 = st.columns([8, 2])
@@ -192,7 +194,6 @@ elif st.session_state.page == "aboutme":
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:30px;'>", unsafe_allow_html=True)
     
-    # Center-aligned neon glassmorphic card for developer info
     st.markdown("""
     <div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">
         <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold;">👨‍💻 About the Developer</h1>
@@ -202,6 +203,7 @@ elif st.session_state.page == "aboutme":
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Role:</td><td style="padding: 12px; color: #ddd;">AI Assistant Core Developer</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">Student of Electrical Engineering Department</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
             <tr><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Domain Interest:</td><td style="padding: 12px; color: #ddd;">Smart Grid Systems, Automation, Power Engineering & AI Integrations</td></tr>
         </table>
         <br>
