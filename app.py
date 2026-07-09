@@ -151,9 +151,9 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
         <div class="inner-circle-icon">📝</div>
         <div class="inner-circle-text">Easy<br>Complaint</div>
     </a>
-    <a href="?nav=aboutme" target="_self" class="glowing-circle-btn green-ring" style="--bg-fill-color: rgba(46, 125, 50, 0.12);">
-        <div class="inner-circle-icon">👤</div>
-        <div class="inner-circle-text">About<br>Me</div>
+    <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn orange-ring" style="--bg-fill-color: rgba(239, 108, 0, 0.12);">
+        <div class="inner-circle-icon">🌐</div>
+        <div class="inner-circle-text">About<br>Website</div>
     </a>
     <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn orange-ring" style="--bg-fill-color: rgba(239, 108, 0, 0.12);">
         <div class="inner-circle-icon">🌐</div>
@@ -224,7 +224,7 @@ elif st.session_state.page == "aboutme":
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Role:</td><td style="padding: 12px; color: #ddd;">AI Assistant Core Developer</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">Student of Electrical Engineering Department</td></tr>
-            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Institute:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
             <tr><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Domain Interest:</td><td style="padding: 12px; color: #ddd;">Smart Grid Systems, Automation, Power Engineering & AI Integrations</td></tr>
         </table>
         <br>
