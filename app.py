@@ -19,14 +19,12 @@ st.markdown("""
 
 # Shikayat darj karne ka function jo har baar fresh connection banata hai
 def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
-    # Streamlit ke secrets se har dafa fresh key load hogi cache bypass karne ke liye
     api_key_fresh = os.environ.get("GEMINI_API_KEY")
     
     if not api_key_fresh:
         return "Error: Streamlit secrets mein GEMINI_API_KEY nahi mili. Kripya check karein!"
         
     try:
-        # Fresh client initialization
         client_fresh = genai.Client(api_key=api_key_fresh)
         
         prompt = f"""
@@ -91,9 +89,10 @@ with col1:
 with col2:
     st.subheader("📋 Complaint Status")
     
+    # Ab sirf button click hone par hi niche wala logic chalega, koi extra spinner ya placeholder text nahi dikhega
     if submit:
         if name.strip() == "" or consumer_id.strip() == "":
             st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
         else:
-                result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
+            result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
             st.info(result)
