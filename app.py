@@ -14,139 +14,174 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: FIXED LANDING PAGE (COMPACT & SPINNING CIRCLES)
+# 🎯 PAGE 1: ULTIMATE FIXED LANDING PAGE (TEXT INSIDE SPINNING CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Custom CSS to eliminate scroll space and seamlessly bind spinning borders to buttons
+    # Powerful CSS Override to eliminate extra buttons and force absolute centering
     st.markdown("""
     <style>
-    /* Remove default padding and eliminate vertical scroll spaces */
+    /* Remove unnecessary default layout padding to eliminate scrolling */
     .block-container {
         padding-top: 2rem !important;
         padding-bottom: 0rem !important;
     }
     
+    /* Absolute Center Framework for Heading and Objects */
     .landing-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin: 0 auto;
-        padding: 0px;
         text-align: center;
         width: 100%;
+        margin: 0 auto;
     }
     
-    /* Centralized Title Header */
+    /* Perfectly Centered Multi-Color Gradient Title */
     .main-heading {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 42px;
+        font-size: 45px;
         font-weight: 800;
-        margin-bottom: 2px;
+        text-align: center !important;
+        width: 100%;
+        margin: 10px auto 5px auto;
     }
     
     .sub-heading {
         color: #555;
-        font-size: 18px;
+        font-size: 19px;
         font-weight: 500;
-        margin-bottom: 40px;
+        text-align: center !important;
+        width: 100%;
+        margin-bottom: 50px;
     }
 
-    /* Spinning Box Frame containing the actual active button element */
-    .spin-container {
+    /* Outer Wrapper for Spinning Glow Track */
+    .spin-circle-frame {
         position: relative;
-        width: 170px;
-        height: 170px;
-        background: linear-gradient(0deg, transparent, transparent, var(--neon-clr));
+        width: 180px;
+        height: 180px;
+        background: linear-gradient(0deg, transparent, transparent, var(--neon-color));
         border-radius: 50%;
-        animation: rotateRing 2s linear infinite;
+        animation: spinTrack 2s linear infinite;
+        margin: 0 auto;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto;
     }
 
-    @keyframes rotateRing {
+    @keyframes spinTrack {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Target the inner element wrapper directly to maintain clean UI boundaries */
-    div.nav-wrapper {
+    /* Inner Solid Colored Core Mask */
+    .spin-circle-frame::before {
+        content: '';
+        position: absolute;
+        inset: 6px;
+        background-color: var(--core-bg);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    /* Target Streamlit Button Container & Force Content to Align inside Circle Center */
+    div.portal-btn-wrapper {
         position: relative;
-        width: 170px;
-        height: 170px;
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
     }
 
-    div.nav-wrapper > div.stButton {
+    div.portal-btn-wrapper > div.stButton {
         position: absolute !important;
-        top: 5px !important;
-        left: 5px !important;
-        right: 5px !important;
-        bottom: 5px !important;
-        z-index: 5 !important;
-        margin: 0px !important;
-        padding: 0px !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 10 !important;
     }
 
-    /* Force the Streamlit button to fill the center space completely */
-    div.nav-wrapper > div.stButton > button {
-        width: 160px !important;
-        height: 160px !important;
+    /* Making Streamlit Button Completely Invisible but clickable over the text area */
+    div.portal-btn-wrapper > div.stButton > button {
+        width: 180px !important;
+        height: 180px !important;
         border-radius: 50% !important;
-        background-color: var(--bg-clr) !important;
-        color: white !important;
-        font-size: 16px !important;
-        font-weight: bold !important;
+        background: transparent !important;
         border: none !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        line-height: 1.3 !important;
-        box-shadow: inset 0px 0px 12px rgba(0,0,0,0.4) !important;
-        animation: none !important; /* Keeps text stable while background spins */
-        transition: all 0.3s ease-in-out !important;
+        color: transparent !important; /* Hide original text styling */
+        text-shadow: none !important;
+        box-shadow: none !important;
+        cursor: pointer !important;
     }
 
-    /* Smooth Interaction Scaling */
-    div.nav-wrapper > div.stButton > button:hover {
-        background-color: var(--neon-clr) !important;
-        box-shadow: 0px 0px 15px var(--neon-clr) !important;
-        transform: scale(1.02);
+    /* Custom Static Content Layer sitting perfectly inside the spinning framework */
+    .inner-text-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white !important;
+        font-family: inherit;
+        pointer-events: none; /* Let clicks pass directly to the button beneath */
+        text-align: center;
+    }
+
+    .inner-text-layer .emoji-space {
+        font-size: 26px;
+        margin-bottom: 4px;
+    }
+
+    .inner-text-layer .text-space {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.2;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # UI Output Execution
+    # Master Centered Grid Container
     st.markdown('<div class="landing-container">', unsafe_allow_html=True)
     st.markdown('<div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-heading">AI Powered Electricity Complaint System</div>', unsafe_allow_html=True)
     
-    # Grid structure columns
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="nav-wrapper"><div class="spin-container" style="--bg-clr: #0f4c81; --neon-clr: #1c83e1;">', unsafe_allow_html=True)
-        if st.button("📝\nEasy\nComplaint", key="btn_c"):
+        st.markdown('<div class="portal-btn-wrapper">', unsafe_allow_html=True)
+        # Spinning Blue Element
+        st.markdown('<div class="spin-circle-frame" style="--core-bg: #0f4c81; --neon-color: #1c83e1;"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="inner-text-layer"><div class="emoji-space">📝</div><div class="text-space">Easy<br>Complaint</div></div>', unsafe_allow_html=True)
+        if st.button("Go to Dashboard", key="p_comp"):
             switch_page("dashboard")
-        st.markdown('</div></div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        st.markdown('<div class="nav-wrapper"><div class="spin-container" style="--bg-clr: #1b4d22; --neon-clr: #2e7d32;">', unsafe_allow_html=True)
-        if st.button("👤\nAbout\nMe", key="btn_m"):
+        st.markdown('<div class="portal-btn-wrapper">', unsafe_allow_html=True)
+        # Spinning Green Element
+        st.markdown('<div class="spin-circle-frame" style="--core-bg: #1b4d22; --neon-color: #2e7d32;"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="inner-text-layer"><div class="emoji-space">👤</div><div class="text-space">About<br>Me</div></div>', unsafe_allow_html=True)
+        if st.button("Go to About Me", key="p_me"):
             switch_page("aboutme")
-        st.markdown('</div></div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        st.markdown('<div class="nav-wrapper"><div class="spin-container" style="--bg-clr: #a34b00; --neon-clr: #ef6c00;">', unsafe_allow_html=True)
-        if st.button("🌐\nAbout\nWebsite", key="btn_w"):
+        st.markdown('<div class="portal-btn-wrapper">', unsafe_allow_html=True)
+        # Spinning Orange Element
+        st.markdown('<div class="spin-circle-frame" style="--core-bg: #a34b00; --neon-color: #ef6c00;"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="inner-text-layer"><div class="emoji-space">🌐</div><div class="text-space">About<br>Website</div></div>', unsafe_allow_html=True)
+        if st.button("Go to About Web", key="p_web"):
             switch_page("aboutweb")
-        st.markdown('</div></div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -212,7 +247,6 @@ elif st.session_state.page == "aboutme":
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Role:</td><td style="padding: 12px; color: #ddd;">AI Assistant Core Developer</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">Student of Electrical Engineering Department</td></tr>
-            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
             <tr><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Domain Interest:</td><td style="padding: 12px; color: #ddd;">Smart Grid Systems, Automation, Power Engineering & AI Integrations</td></tr>
         </table>
         <br>
