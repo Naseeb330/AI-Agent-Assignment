@@ -184,14 +184,21 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
             return response.text
         except Exception as e: return f"Maazrat: {str(e)}"
             
+    elif st.session_state.page == "dashboard":
+    # Dashboard ka Header
+    st.markdown("<h2 style='color:#1c83e1;'>⚡ Dashboard Control Panel</h2>", unsafe_allow_html=True)
+    
+    # Columns create karna (Yahan extra space nahi honi chahiye)
     col1, col2 = st.columns(2)
+    
     with col1:
         st.subheader("📋 Consumer Form")
         name_input = st.text_input("👤 Consumer Name")
         consumer_id_input = st.text_input("🆔 Consumer ID")
         phone_input = st.text_input("📞 Mobile Number")
         city_input = st.selectbox("City", options=["Quetta", "Lahore", "Islamabad", "Karachi"])
-        # 🌟 NEW EXPANDED WAPDA COMPLAINT OPTIONS
+        
+        # Complaint Options
         complaint_type_input = st.selectbox("Type", options=[
             "Power Outage (Load Shedding / Line Fault)", 
             "Low Voltage / High Voltage Fluctuations",
@@ -208,10 +215,13 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     with col2:
         st.subheader("📋 Complaint Status")
         if submit:
-            if name_input.strip() == "" or consumer_id_input.strip() == "": st.error("Name & ID are required.")
+            if name_input.strip() == "" or consumer_id_input.strip() == "":
+                st.error("Name & ID are required.")
             else:
-                with st.spinner("Processing..."): result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
-                st.markdown(result)
+                with st.spinner("Processing..."):
+                    # Function call
+                    result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
+                    st.markdown(result)
 
 
 # ==============================================================================
