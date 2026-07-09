@@ -205,7 +205,7 @@ elif st.session_state.page == "dashboard":
 
 
 # ==============================================================================
-# 👤 PAGE 3: CENTRALIZED ABOUT ME (WITH SAFE LOCAL IMAGE LOADING)
+# 👤 PAGE 3: CENTRALIZED ABOUT ME (ERROR-FREE COMPONENT)
 # ==============================================================================
 elif st.session_state.page == "aboutme":
     top_col1, top_col2 = st.columns([8, 2])
@@ -215,33 +215,29 @@ elif st.session_state.page == "aboutme":
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:30px;'>", unsafe_allow_html=True)
     
-    # 📸 LOCAL IMAGE LOADING LOGIC (Bina kisi error ke image load karne ke liye)
-    import base64
-    
-    # Apni picture ka sahi naam aur format yahan likhein (e.g., 'naseeb.jpg' ya 'my_picture.png')
+    # 📝 APNI PICTURE KA NAAM YAHAN SET KAREIN:
+    # Apni photo ko isi project directory (folder) mein rkhein aur uska naam yahan likhein.
     image_filename = "my_picture.jpg" 
+
+    # Profile Card Container Start
+    st.markdown('<div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">', unsafe_allow_html=True)
     
-    img_html = ""
-    if os.path.exists(image_filename):
-        with open(image_filename, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode()
-        # HTML friendly string format
-        img_html = f'<img src="data:image/jpeg;base64,{encoded_string}" style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid #2e7d32; object-fit: cover; box-shadow: 0 0 15px rgba(46,125,50,0.5);">'
-    else:
-        # Agar file na mile toh generic placeholder auto-load hoga taake portal crash na ho
-        img_html = '<div style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid #2e7d32; background: #222; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 15px rgba(46,125,50,0.5); color: #2e7d32; font-size: 40px;">👤</div>'
+    # 📸 Display Image Safely Using Native Streamlit Layout Controls
+    img_col1, img_col2, img_col3 = st.columns([3, 2, 3])
+    with img_col2:
+        if os.path.exists(image_filename):
+            st.image(image_filename, use_container_width=True)
+        else:
+            # Placeholder text if image is not found to prevent crashes
+            st.markdown('<div style="text-align:center; font-size:60px; background:#222; border-radius:50%; width:120px; height:120px; line-height:120px; margin:0 auto; border:3px solid #2e7d32; color:#2e7d32;">👤</div>', unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">
-        
-        <!-- Render encoded image dynamically -->
-        <div style="margin-bottom: 20px; display: flex; justify-content: center;">
-            {img_html}
+    # Developer Information Content
+    st.markdown("""
+        <div style="text-align: center; margin-top: 15px;">
+            <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold; font-size: 32px;">👨‍💻 About the Developer</h1>
+            <p style="color: #888; font-size: 18px; font-style: italic; margin-bottom: 25px;">"Engineering Smarter Infrastructure with AI"</p>
+            <hr style="border-color: #2e7d32; width: 50%; margin: 0 auto 25px auto;">
         </div>
-
-        <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold;">👨‍💻 About the Developer</h1>
-        <p style="color: #888; font-size: 18px; font-style: italic; margin-bottom: 25px;">"Engineering Smarter Infrastructure with AI"</p>
-        <hr style="border-color: #2e7d32; width: 50%; margin: 0 auto 25px auto;">
         
         <table style="width: 100%; font-size: 18px; color: white; border-collapse: collapse; text-align: left;">
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
