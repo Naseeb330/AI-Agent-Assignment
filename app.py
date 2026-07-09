@@ -191,7 +191,7 @@ elif st.session_state.page == "dashboard":
 
     top_col1, top_col2 = st.columns([8, 2])
     with top_col1:
-        st.markdown("<h2 style='margin:0; color:#111111;'>⚡ Dashboard Control Panel</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='margin:0; color:#ffffff;'>⚡ Dashboard Control Panel</h2>", unsafe_allow_html=True)
     with top_col2:
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:20px;'>", unsafe_allow_html=True)
