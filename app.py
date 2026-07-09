@@ -2,7 +2,7 @@ from google import genai
 import os
 import streamlit as st
 
-# --- PAGE CONFIG (Absolute Fullscreen, No Scrolls) ---
+# --- PAGE CONFIG (Absolute Fullscreen, Strict Layout Locking) ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
 
 # --- SESSION STATE (Page Router) ---
@@ -14,14 +14,14 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: ULTIMATE FIXED LANDING PAGE (TRANSPARENT CENTERS & FUNCTIONAL)
+# 🎯 PAGE 1: FIXED CENTERED COMPACT LANDING PAGE
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Powerful CSS layout overrides to ensure text fits inside spinning objects natively
+    # Advanced CSS Injection for pure centering and exact distance clamping
     st.markdown("""
     <style>
-    /* Complete scroll bar elimination */
+    /* Stop any vertical or horizontal page scrolling or canvas jumping */
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
         max-height: 100vh !important;
         overflow: hidden !important;
@@ -32,8 +32,8 @@ if st.session_state.page == "landing":
         padding-bottom: 0rem !important;
     }
 
-    /* Master Container to Force absolute centering of Title + Elements */
-    .master-center-layout {
+    /* Absolute Global Centering for Entire Content Area */
+    .master-wrapper-center {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -43,148 +43,145 @@ if st.session_state.page == "landing":
         margin: 0 auto;
     }
     
-    /* Clean Centered Header Block */
-    .header-block {
-        margin-bottom: 30px;
+    /* Highly Compact Header Group */
+    .header-group-box {
+        margin-bottom: 15px !important; /* Extremely tight distance to buttons below */
+        text-align: center;
     }
     
     .main-heading {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 48px;
+        font-size: 46px;
         font-weight: 800;
-        margin: 0px 0px 5px 0px;
-        display: inline-block;
+        margin: 0px 0px 2px 0px !important;
     }
     
     .sub-heading {
         color: #666;
-        font-size: 19px;
+        font-size: 18px;
         font-weight: 500;
-        margin: 0;
+        margin: 0px !important;
     }
 
-    /* Absolute Native Custom Dynamic Core Button Overwrite */
-    div.stButton > button {
-        position: relative !important;
-        width: 170px !important;
-        height: 170px !important;
-        border-radius: 50% !important;
-        background: transparent !important; /* NO SOLID COLORS INSIDE */
-        border: none !important;
-        box-shadow: none !important;
-        color: inherit !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
+    /* Force Grid Column components to sync layout seamlessly */
+    [data-testid="stHorizontalBlock"] {
         justify-content: center !important;
-        text-align: center !important;
-        cursor: pointer !important;
+        max-width: 800px !important;
         margin: 0 auto !important;
-        z-index: 5 !important;
-        transition: transform 0.2s ease;
-    }
-    
-    div.stButton > button:hover {
-        transform: scale(1.05);
-        background: transparent !important;
-        border: none !important;
+        gap: 20px !important;
     }
 
-    /* Custom Wrapper frame to hold spinning glowing ring behind the native button */
-    .spinning-frame-wrapper {
+    /* Container component for holding the ring and the button precisely layered */
+    .glowing-circle-btn-container {
         position: relative;
-        width: 170px;
-        height: 170px;
+        width: 160px;
+        height: 160px;
         margin: 0 auto;
     }
 
-    .spinning-glow-ring {
+    /* Light Dynamic Neon Ring Wrapping Around the Button Structure */
+    .wrapping-spin-ring {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 160px;
+        height: 160px;
         border-radius: 50%;
-        background: linear-gradient(0deg, transparent, transparent, var(--neon-color));
-        animation: spinObject 2s linear infinite;
+        background: linear-gradient(0deg, transparent, transparent, var(--ring-glow-color));
+        animation: spinRingsAround 2s linear infinite;
         z-index: 1;
-        pointer-events: none; /* Let clicks pass straight to the button */
+        pointer-events: none; /* Allows clicks to penetrate cleanly */
     }
 
-    @keyframes spinObject {
+    @keyframes spinRingsAround {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Custom Text Overlay content that will sit beautifully inside the button area */
-    .button-content-wrapper {
-        pointer-events: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+    /* Modifying the underlying native Streamlit button container into a transparent round shape */
+    div.glowing-circle-btn-container > div.stButton {
+        position: absolute !important;
+        top: 6px !important;
+        left: 6px !important;
+        width: 148px !important;
+        height: 148px !important;
+        z-index: 5 !important;
+        margin: 0px !important;
+        padding: 0px !important;
     }
 
-    .button-content-wrapper .emoji {
-        font-size: 32px;
-        margin-bottom: 4px;
-    }
-
-    .button-content-wrapper .label {
-        font-size: 15px;
-        font-weight: bold;
-        color: #333; /* Clean dark text visible over light backgrounds */
-        line-height: 1.2;
+    /* Customizing the interactive face of the Streamlit element with NO background tint */
+    div.glowing-circle-btn-container > div.stButton > button {
+        width: 148px !important;
+        height: 148px !important;
+        border-radius: 50% !important;
+        background: transparent !important; /* Clean transparent aesthetic inside */
+        border: 2px solid transparent !important;
+        box-shadow: none !important;
+        color: inherit !important;
+        font-size: 15px !important;
+        font-weight: bold !important;
+        line-height: 1.3 !important;
+        white-space: pre-line !important;
+        cursor: pointer !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: transform 0.2s ease, border-color 0.2s ease;
     }
     
-    /* Dark mode support if user has a dark theme enabled */
-    @media (prefers-color-scheme: dark) {
-        .button-content-wrapper .label {
-            color: #fff;
-        }
+    /* Interactive tactile feedback on hover actions */
+    div.glowing-circle-btn-container > div.stButton > button:hover {
+        transform: scale(1.04);
+        border-color: var(--ring-glow-color) !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+    }
+
+    div.glowing-circle-btn-container > div.stButton > button:active,
+    div.glowing-circle-btn-container > div.stButton > button:focus {
+        background: transparent !important;
+        box-shadow: none !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Building Centered Layout Framework
-    st.markdown('<div class="master-center-layout">', unsafe_allow_html=True)
+    # Rendering Center Balanced Wrapper Frame
+    st.markdown('<div class="master-wrapper-center">', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="header-block">
+    <div class="header-group-box">
         <div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>
         <div class="sub-heading">AI Powered Electricity Complaint System</div>
     </div>
     """, unsafe_allow_html=True)
     
+    # Initializing Horizontal Grid for 3 Balanced Component Centers
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="spinning-frame-wrapper">', unsafe_allow_html=True)
-        # Soft Blue Spinning Ring Background (No Solid Center)
-        st.markdown('<div class="spinning-glow-ring" style="--neon-color: #1c83e1;"></div>', unsafe_allow_html=True)
-        # Native Interactive Button
-        if st.button("📝\nEasy\nComplaint", key="native_dash_btn"):
+        st.markdown('<div class="glowing-circle-btn-container" style="--ring-glow-color: #1c83e1;">', unsafe_allow_html=True)
+        st.markdown('<div class="wrapping-spin-ring"></div>', unsafe_allow_html=True)
+        # Native Interactive Symbol Button (Text layout updated to align with formatting restrictions)
+        if st.button("📝\n\nEasy\nComplaint", key="dash_trigger_node"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        st.markdown('<div class="spinning-frame-wrapper">', unsafe_allow_html=True)
-        # Soft Green Spinning Ring Background (No Solid Center)
-        st.markdown('<div class="spinning-glow-ring" style="--neon-color: #2e7d32;"></div>', unsafe_allow_html=True)
-        # Native Interactive Button
-        if st.button("👤\nAbout\nMe", key="native_me_btn"):
+        st.markdown('<div class="glowing-circle-btn-container" style="--ring-glow-color: #2e7d32;">', unsafe_allow_html=True)
+        st.markdown('<div class="wrapping-spin-ring"></div>', unsafe_allow_html=True)
+        # Native Interactive Symbol Button
+        if st.button("👤\n\nAbout\nMe", key="me_trigger_node"):
             switch_page("aboutme")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        st.markdown('<div class="spinning-frame-wrapper">', unsafe_allow_html=True)
-        # Soft Orange Spinning Ring Background (No Solid Center)
-        st.markdown('<div class="spinning-glow-ring" style="--neon-color: #ef6c00;"></div>', unsafe_allow_html=True)
-        # Native Interactive Button
-        if st.button("🌐\nAbout\nWebsite", key="native_web_btn"):
+        st.markdown('<div class="glowing-circle-btn-container" style="--ring-glow-color: #ef6c00;">', unsafe_allow_html=True)
+        st.markdown('<div class="wrapping-spin-ring"></div>', unsafe_allow_html=True)
+        # Native Interactive Symbol Button
+        if st.button("🌐\n\nAbout\nWebsite", key="web_trigger_node"):
             switch_page("aboutweb")
         st.markdown('</div>', unsafe_allow_html=True)
         
