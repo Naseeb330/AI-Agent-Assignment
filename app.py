@@ -22,11 +22,11 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: LANDING PAGE (BUTTONS STRICTLY EMBEDDED INSIDE THE GLOWING CIRCLES)
+# 🎯 PAGE 1: LANDING PAGE (PERFECTLY ALIGNED SINGLE ROW CIRCUITS)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # CSS injection formatting standard anchor links inside glowing wrappers perfectly
+    # Clean and fixed CSS layout to ensure everything aligns perfectly in a single row
     st.markdown("""
     <style>
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
@@ -35,14 +35,14 @@ if st.session_state.page == "landing":
     }
     
     .block-container {
-        padding-top: 3rem !important;
+        padding-top: 4rem !important;
         padding-bottom: 0rem !important;
     }
 
     /* Centered Header Layout Setup */
     .portal-header-box {
         text-align: center;
-        margin-bottom: 50px !important;
+        margin-bottom: 60px !important;
         width: 100%;
     }
     
@@ -62,26 +62,26 @@ if st.session_state.page == "landing":
         margin-top: 6px;
     }
 
-    /* Custom Flex Container forcing standard single horizontal row */
+    /* Fixed Row Container forcing a clean horizontal alignment side-by-side */
     .custom-buttons-row {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: 50px;
+        gap: 60px;
         width: 100%;
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
     }
 
-    /* Absolute Grid Component for the Glowing Interactive Circles */
+    /* Custom Glowing Circle Component acting directly as the button click zone */
     .glow-circle-button {
         position: relative;
-        width: 170px;
-        height: 170px;
+        width: 180px;
+        height: 180px;
         border-radius: 50%;
         background: var(--glow-bg-fill) !important;
-        box-shadow: inset 0 0 20px var(--glow-bg-fill), 0 0 10px rgba(0,0,0,0.05);
+        box-shadow: inset 0 0 25px var(--glow-bg-fill), 0 0 10px rgba(0,0,0,0.05);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -89,42 +89,23 @@ if st.session_state.page == "landing":
         text-decoration: none !important;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
-    }
-
-    /* Moving Peripheral Ring Component */
-    .glow-circle-button::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        border-radius: 50%;
-        padding: 3.5px;
-        background: linear-gradient(0deg, transparent, transparent, var(--neon-stroke-color));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        animation: rotateStrokeRing 2.5s linear infinite;
-        pointer-events: none;
-    }
-
-    @keyframes rotateStrokeRing {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        border: 2px solid var(--neon-stroke-color); /* Safe fallback stroke */
     }
 
     .glow-circle-button:hover {
-        transform: scale(1.05);
-        box-shadow: inset 0 0 30px var(--glow-bg-fill), 0 0 20px var(--glow-bg-fill);
+        transform: scale(1.08);
+        box-shadow: inset 0 0 35px var(--glow-bg-fill), 0 0 25px var(--glow-bg-fill);
     }
 
-    /* Tight Interface Typography Controls Inside the Circles */
+    /* Interface Typography inside the circles */
     .inner-icon {
-        font-size: 28px;
-        margin-bottom: 8px;
+        font-size: 32px;
+        margin-bottom: 10px;
         pointer-events: none;
     }
 
     .inner-text {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         line-height: 1.3;
         text-align: center;
@@ -146,23 +127,20 @@ if st.session_state.page == "landing":
     </div>
     """, unsafe_allow_html=True)
     
-    # Executing the single flex horizontal row container 
+    # Rendering the perfectly aligned buttons row 
     st.markdown("""
     <div class="custom-buttons-row">
         
-        <!-- Button 1: Easy Complaint -->
         <a href="?nav_target=dashboard" target="_self" class="glow-circle-button" style="--neon-stroke-color: #1c83e1; --glow-bg-fill: rgba(28, 131, 225, 0.12);">
             <div class="inner-icon">📝</div>
             <div class="inner-text">Easy<br>Complaint</div>
         </a>
 
-        <!-- Button 2: About Me -->
         <a href="?nav_target=aboutme" target="_self" class="glow-circle-button" style="--neon-stroke-color: #2e7d32; --glow-bg-fill: rgba(46, 125, 50, 0.12);">
             <div class="inner-icon">👤</div>
             <div class="inner-text">About<br>Me</div>
         </a>
 
-        <!-- Button 3: About Website -->
         <a href="?nav_target=aboutweb" target="_self" class="glow-circle-button" style="--neon-stroke-color: #ef6c00; --glow-bg-fill: rgba(239, 108, 0, 0.12);">
             <div class="inner-icon">🌐</div>
             <div class="inner-text">About<br>Website</div>
