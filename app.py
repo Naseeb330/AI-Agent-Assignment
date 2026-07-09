@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
@@ -180,7 +180,8 @@ elif st.session_state.page == "dashboard":
         try:
             client_fresh = genai.Client(api_key=api_key_fresh)
             prompt = f"You are an AI assistant for Pakistan's electricity complaint system. Customer Details: Name: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally. Heading and description text on SAME line. Double spacing BETWEEN sections. Sincerely, AI Assistant, By: Naseeb U Rahman"
-            response = client_fresh.models.generate_content(model="gemini-1.5-flash", contents=prompt)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            response = model.generate_content(prompt)
             return response.text
         except Exception as e: return f"Maazrat: {str(e)}"
 
