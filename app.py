@@ -184,7 +184,7 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
             return response.text
         except Exception as e: return f"Maazrat: {str(e)}"
    
-    col1, col2 = st.columns(2)
+      col1, col2 = st.columns(2)
     with col1:
         st.subheader("📋 Consumer Form")
         name_input = st.text_input("👤 Consumer Name")
