@@ -27,6 +27,7 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
         
+        # New strict prompt format for inline description and double line spacing between blocks
         prompt = f"""
 You are an AI assistant for Pakistan's electricity complaint system.
 
@@ -46,17 +47,25 @@ Reply professionally based on the specific complaint type provided.
 
 STARTING RULE: You MUST start your response with a professional greeting addressing the customer by their name, for example: "Dear {name}," followed by a short acknowledgment sentence on a new line.
 
-FORMATTING RULE: After the greeting, leave a line break and list these exact sections. Each section MUST start on a brand NEW LINE with double spacing:
-- **Complaint Status:** [Details]
-- **Concerned Company:** [Details]
-- **Priority:** [Details]
-- **Estimated Time:** [Details]
-- **Recommendation:** [Details]
+FORMATTING RULE: After the greeting, leave a line break and list these exact sections. 
+CRITICAL: The description text MUST start immediately on the same line as the bold heading. Do NOT put a newline between a heading and its description. 
+
+Format the sections exactly like this (with double line breaks BETWEEN sections):
+
+**Complaint Status:** [Write description here on the same line]
+
+**Concerned Company:** [Write description here on the same line]
+
+**Priority:** [Write description here on the same line]
+
+**Estimated Time:** [Write description here on the same line]
+
+**Recommendation:** [Write description here on the same line]
 
 CLOSING RULE:
 1. Write a unique, professional closing sentence that matches the complaint type. Do NOT repeat the exact same closing sentence for different types of complaints.
 2. Put a double line break after the closing sentence.
-3. At the very end, you MUST sign off in separate lines exactly like this (ensure your name is on its own separate line):
+3. At the very end, you MUST sign off in separate lines exactly like this:
 
 Sincerely,
 
@@ -69,9 +78,7 @@ By: Naseeb U Rahman
             contents=prompt
         )
         
-        # --- MAGIC TRICK: Force Streamlit to respect all newlines from Gemini ---
-        clean_text = response.text.replace("\n", "\n\n")
-        return clean_text
+        return response.text
         
     except Exception as e:
         return f"Maazrat, koi takneeki masla aa gaya hai: {str(e)}"
@@ -109,7 +116,7 @@ with col2:
             st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
         else:
             result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
-            st.markdown(result) # Gumrah text ko markdown format mein thik tarah dikhane k liye st.markdown use kiya
+            st.markdown(result) # Isse formatting bilkul perfect display hogi
 
 # --- FOOTER ---
 st.markdown("""
