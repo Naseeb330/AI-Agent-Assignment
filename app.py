@@ -36,7 +36,7 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
 
 /* --- COMPLAINT INPUT FIELDS & LABELS COLOR VISIBILITY FIX --- */
 .stTextInput input, .stTextArea textarea, div[data-baseweb="select"] div {
-    color: #ffffff !important;
+    color: #111111 !important;
     background-color: #111111 !important;
     border: 1px solid #1c83e1 !important;
 }
