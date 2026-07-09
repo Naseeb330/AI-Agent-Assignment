@@ -14,14 +14,14 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: ULTIMATE CENTERING & CLEAN BUTTONS LANDING PAGE
+# 🎯 PAGE 1: ULTIMATE FIXED LANDING PAGE (TRANSPARENT CENTERS & FUNCTIONAL)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Powerful layout styling override
+    # Powerful CSS layout overrides to ensure text fits inside spinning objects natively
     st.markdown("""
     <style>
-    /* Prevent any vertical or horizontal scrollbars globally */
+    /* Complete scroll bar elimination */
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
         max-height: 100vh !important;
         overflow: hidden !important;
@@ -30,29 +30,6 @@ if st.session_state.page == "landing":
     .block-container {
         padding-top: 2rem !important;
         padding-bottom: 0rem !important;
-    }
-
-    /* CRITICAL: Force hide ALL default streamlit button borders, backgrounds, and text layers */
-    div.stButton > button {
-        background: transparent !important;
-        border: none !important;
-        color: transparent !important;
-        box-shadow: none !important;
-        width: 100% !important;
-        height: 100% !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        z-index: 20 !important;
-        cursor: pointer !important;
-    }
-    
-    /* Remove streamlit button hover artifacts */
-    div.stButton > button:hover, div.stButton > button:active, div.stButton > button:focus {
-        background: transparent !important;
-        border: none !important;
-        color: transparent !important;
-        box-shadow: none !important;
     }
 
     /* Master Container to Force absolute centering of Title + Elements */
@@ -68,7 +45,7 @@ if st.session_state.page == "landing":
     
     /* Clean Centered Header Block */
     .header-block {
-        margin-bottom: 25px; /* Super tight distance control */
+        margin-bottom: 30px;
     }
     
     .main-heading {
@@ -88,33 +65,52 @@ if st.session_state.page == "landing":
         margin: 0;
     }
 
-    /* Grid Row Wrapper for Centers */
-    .circles-row {
-        display: flex;
-        justify-content: center;
-        gap: 50px;
-        width: 100%;
-        margin-top: 10px;
+    /* Absolute Native Custom Dynamic Core Button Overwrite */
+    div.stButton > button {
+        position: relative !important;
+        width: 170px !important;
+        height: 170px !important;
+        border-radius: 50% !important;
+        background: transparent !important; /* NO SOLID COLORS INSIDE */
+        border: none !important;
+        box-shadow: none !important;
+        color: inherit !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        cursor: pointer !important;
+        margin: 0 auto !important;
+        z-index: 5 !important;
+        transition: transform 0.2s ease;
+    }
+    
+    div.stButton > button:hover {
+        transform: scale(1.05);
+        background: transparent !important;
+        border: none !important;
     }
 
-    /* Component Framework */
-    .circle-interactive-card {
+    /* Custom Wrapper frame to hold spinning glowing ring behind the native button */
+    .spinning-frame-wrapper {
         position: relative;
         width: 170px;
         height: 170px;
+        margin: 0 auto;
     }
 
-    /* Smooth Light-Colored Soft Glow Spinning Ring */
-    .spinning-neon-ring {
+    .spinning-glow-ring {
         position: absolute;
         top: 0;
         left: 0;
-        width: 170px;
-        height: 170px;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
-        background: linear-gradient(0deg, transparent, transparent, var(--light-neon));
-        animation: spinObject 2.5s linear infinite;
+        background: linear-gradient(0deg, transparent, transparent, var(--neon-color));
+        animation: spinObject 2s linear infinite;
         z-index: 1;
+        pointer-events: none; /* Let clicks pass straight to the button */
     }
 
     @keyframes spinObject {
@@ -122,46 +118,38 @@ if st.session_state.page == "landing":
         100% { transform: rotate(360deg); }
     }
 
-    /* Center masking core */
-    .inner-disk-core {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 158px;
-        height: 158px;
-        background-color: var(--bg-color);
-        border-radius: 50%;
-        z-index: 2;
+    /* Custom Text Overlay content that will sit beautifully inside the button area */
+    .button-content-wrapper {
+        pointer-events: none;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        color: white !important;
         text-align: center;
-        box-shadow: inset 0px 0px 12px rgba(0,0,0,0.6);
-        transition: all 0.3s ease;
     }
 
-    .inner-disk-core .emoji {
-        font-size: 28px;
-        margin-bottom: 5px;
+    .button-content-wrapper .emoji {
+        font-size: 32px;
+        margin-bottom: 4px;
     }
 
-    .inner-disk-core .label-txt {
+    .button-content-wrapper .label {
         font-size: 15px;
         font-weight: bold;
+        color: #333; /* Clean dark text visible over light backgrounds */
         line-height: 1.2;
     }
-
-    /* Hover soft glow feedback */
-    .circle-interactive-card:hover .inner-disk-core {
-        background-color: var(--light-neon) !important;
-        box-shadow: 0px 0px 25px var(--light-neon) !important;
+    
+    /* Dark mode support if user has a dark theme enabled */
+    @media (prefers-color-scheme: dark) {
+        .button-content-wrapper .label {
+            color: #fff;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Injecting Master Center Framework
+    # Building Centered Layout Framework
     st.markdown('<div class="master-center-layout">', unsafe_allow_html=True)
     
     st.markdown("""
@@ -171,33 +159,32 @@ if st.session_state.page == "landing":
     </div>
     """, unsafe_allow_html=True)
     
-    # 3 Columns containing the absolute invisible action buttons overlaid perfectly
-    col1, col2, col3 = st.columns([1,1,1])
+    col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="circle-interactive-card" style="margin: 0 auto;">', unsafe_allow_html=True)
-        # Soft Light Blue Neon Ring
-        st.markdown('<div class="spinning-neon-ring" style="--light-neon: #64b5f6;"></div>', unsafe_allow_html=True)
-        st.markdown('<div class="inner-disk-core" style="--bg-color: #0f4c81; --light-neon: #1c83e1;"><div class="emoji">📝</div><div class="label-txt">Easy<br>Complaint</div></div>', unsafe_allow_html=True)
-        if st.button("dash_click", key="dash_action"):
+        st.markdown('<div class="spinning-frame-wrapper">', unsafe_allow_html=True)
+        # Soft Blue Spinning Ring Background (No Solid Center)
+        st.markdown('<div class="spinning-glow-ring" style="--neon-color: #1c83e1;"></div>', unsafe_allow_html=True)
+        # Native Interactive Button
+        if st.button("📝\nEasy\nComplaint", key="native_dash_btn"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        st.markdown('<div class="circle-interactive-card" style="margin: 0 auto;">', unsafe_allow_html=True)
-        # Soft Light Green Neon Ring
-        st.markdown('<div class="spinning-neon-ring" style="--light-neon: #81c784;"></div>', unsafe_allow_html=True)
-        st.markdown('<div class="inner-disk-core" style="--bg-color: #1b4d22; --light-neon: #2e7d32;"><div class="emoji">👤</div><div class="label-txt">About<br>Me</div></div>', unsafe_allow_html=True)
-        if st.button("me_click", key="me_action"):
+        st.markdown('<div class="spinning-frame-wrapper">', unsafe_allow_html=True)
+        # Soft Green Spinning Ring Background (No Solid Center)
+        st.markdown('<div class="spinning-glow-ring" style="--neon-color: #2e7d32;"></div>', unsafe_allow_html=True)
+        # Native Interactive Button
+        if st.button("👤\nAbout\nMe", key="native_me_btn"):
             switch_page("aboutme")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        st.markdown('<div class="circle-interactive-card" style="margin: 0 auto;">', unsafe_allow_html=True)
-        # Soft Light Orange Neon Ring
-        st.markdown('<div class="spinning-neon-ring" style="--light-neon: #ffb74d;"></div>', unsafe_allow_html=True)
-        st.markdown('<div class="inner-disk-core" style="--bg-color: #a34b00; --light-neon: #ef6c00;"><div class="emoji">🌐</div><div class="label-txt">About<br>Website</div></div>', unsafe_allow_html=True)
-        if st.button("web_click", key="web_action"):
+        st.markdown('<div class="spinning-frame-wrapper">', unsafe_allow_html=True)
+        # Soft Orange Spinning Ring Background (No Solid Center)
+        st.markdown('<div class="spinning-glow-ring" style="--neon-color: #ef6c00;"></div>', unsafe_allow_html=True)
+        # Native Interactive Button
+        if st.button("🌐\nAbout\nWebsite", key="native_web_btn"):
             switch_page("aboutweb")
         st.markdown('</div>', unsafe_allow_html=True)
         
