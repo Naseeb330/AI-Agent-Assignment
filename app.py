@@ -138,7 +138,7 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
     font-weight: 700;
     line-height: 1.3;
     text-align: center;
-    color: #ffffff !important;
+    color: #111111 !important;
 }
 </style>
 """, unsafe_allow_html=True)
