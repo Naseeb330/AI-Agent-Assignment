@@ -9,11 +9,11 @@ st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", l
 if "page" not in st.session_state:
     st.session_state.page = "landing"
 
-# URL Query Parameter Wrapper for safe page switching via custom HTML buttons
+# URL Query Parameter Router
 query_params = st.query_params
 if "nav" in query_params:
     target_page = query_params["nav"]
-    st.query_params.clear()  # Clear to avoid refresh loops
+    st.query_params.clear()
     st.session_state.page = target_page
     st.rerun()
 
@@ -22,155 +22,143 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: LANDING PAGE (PURE HTML BUTTONS LOCKED INSIDE GLOWING CIRCLES)
+# 🎯 PAGE 1: LANDING PAGE (CLEAN RENDERED GLOWING CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # CSS to hide default streamlit blocks and style our custom row elements
+# CRITICAL: No spaces at the start of any line inside st.markdown to prevent code-block escaping
     st.markdown("""
-    <style>
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
-        max-height: 100vh !important;
-        overflow: hidden !important;
-    }
-    
-    .block-container {
-        padding-top: 3.5rem !important;
-        padding-bottom: 0rem !important;
-    }
+<style>
+html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
+    max-height: 100vh !important;
+    overflow: hidden !important;
+}
 
-    /* Centered Main Header Styles */
-    .portal-header-box {
-        text-align: center;
-        margin-bottom: 60px !important;
-        width: 100%;
-    }
-    
-    .portal-main-heading {
-        background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 46px;
-        font-weight: 800;
-        margin: 0;
-    }
-    
-    .portal-sub-heading {
-        color: #666;
-        font-size: 18px;
-        font-weight: 500;
-        margin-top: 6px;
-    }
+.block-container {
+    padding-top: 3.5rem !important;
+    padding-bottom: 0rem !important;
+}
 
-    /* Standard Flexbox Row containing the 3 items side-by-side */
-    .custom-circles-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 60px;
-        width: 100%;
-        max-width: 1000px;
-        margin: 0 auto !important;
-    }
+.portal-header-box {
+    text-align: center;
+    margin-bottom: 60px !important;
+    width: 100%;
+}
 
-    /* The exact glowing circle acting directly as the button click frame */
-    .glowing-circle-btn {
-        position: relative;
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
-        background: var(--bg-fill-color) !important;
-        box-shadow: inset 0 0 25px var(--bg-fill-color), 0 0 15px rgba(0,0,0,0.05);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none !important;
-        cursor: pointer;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+.portal-main-heading {
+    background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 46px;
+    font-weight: 800;
+    margin: 0;
+}
 
-    /* Outer rotating active ring mesh */
-    .glowing-circle-btn::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        border-radius: 50%;
-        padding: 3.5px;
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        animation: spinOuterRing 2.5s linear infinite;
-        pointer-events: none;
-    }
+.portal-sub-heading {
+    color: #666;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 6px;
+}
 
-    .glowing-circle-btn[style*="#1c83e1"]::before { background: linear-gradient(0deg, transparent, transparent, #1c83e1); }
-    .glowing-circle-btn[style*="#2e7d32"]::before { background: linear-gradient(0deg, transparent, transparent, #2e7d32); }
-    .glowing-circle-btn[style*="#ef6c00"]::before { background: linear-gradient(0deg, transparent, transparent, #ef6c00); }
+.custom-circles-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto !important;
+}
 
-    @keyframes spinOuterRing {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+.glowing-circle-btn {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: var(--bg-fill-color) !important;
+    box-shadow: inset 0 0 25px var(--bg-fill-color), 0 0 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .glowing-circle-btn:hover {
-        transform: scale(1.06);
-        box-shadow: inset 0 0 35px var(--bg-fill-color), 0 0 25px var(--bg-fill-color);
-    }
+.glowing-circle-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 50%;
+    padding: 3.5px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: spinOuterRing 2.5s linear infinite;
+    pointer-events: none;
+}
 
-    /* Font styling strictly locked inside the centers of the circles */
-    .inner-circle-icon {
-        font-size: 32px;
-        margin-bottom: 8px;
-    }
+.glowing-circle-btn[style*="#1c83e1"]::before { background: linear-gradient(0deg, transparent, transparent, #1c83e1); }
+.glowing-circle-btn[style*="#2e7d32"]::before { background: linear-gradient(0deg, transparent, transparent, #2e7d32); }
+.glowing-circle-btn[style*="#ef6c00"]::before { background: linear-gradient(0deg, transparent, transparent, #ef6c00); }
 
-    .inner-circle-text {
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 1.3;
-        text-align: center;
-        color: #222 !important;
-    }
+@keyframes spinOuterRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-    @media (prefers-color-scheme: dark) {
-        .inner-circle-text { color: #ffffff !important; }
-    }
-    </style>
-    """, unsafe_allow_html=True)
+.glowing-circle-btn:hover {
+    transform: scale(1.06);
+    box-shadow: inset 0 0 35px var(--bg-fill-color), 0 0 25px var(--bg-fill-color);
+}
 
-    # Render Header
+.inner-circle-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.inner-circle-text {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    color: #222 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .inner-circle-text { color: #ffffff !important; }
+}
+</style>
+""", unsafe_allow_html=True)
+
+    # Header Render
     st.markdown("""
-    <div class="portal-header-box">
-        <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
-        <div class="portal-sub-heading">AI Powered Electricity Complaint System</div>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="portal-header-box">
+    <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
+    <div class="portal-sub-heading">AI Powered Electricity Complaint System</div>
+</div>
+""", unsafe_allow_html=True)
     
-    # Render custom HTML row - This ensures no square button boxes are created
+    # Circles Interface Row Render (Completely unindented to prevent text escaping)
     st.markdown("""
-    <div class="custom-circles-row">
-        
-        <!-- Circle 1: Easy Complaint -->
-        <a href="?nav=dashboard" target="_self" class="glowing-circle-btn" style="--bg-fill-color: rgba(28, 131, 225, 0.12); color: #1c83e1;">
-            <div class="inner-circle-icon">📝</div>
-            <div class="inner-circle-text">Easy<br>Complaint</div>
-        </a>
-
-        <!-- Circle 2: About Me -->
-        <a href="?nav=aboutme" target="_self" class="glowing-circle-btn" style="--bg-fill-color: rgba(46, 125, 50, 0.12); color: #2e7d32;">
-            <div class="inner-circle-icon">👤</div>
-            <div class="inner-circle-text">About<br>Me</div>
-        </a>
-
-        <!-- Circle 3: About Website -->
-        <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn" style="--bg-fill-color: rgba(239, 108, 0, 0.12); color: #ef6c00;">
-            <div class="inner-circle-icon">🌐</div>
-            <div class="inner-circle-text">About<br>Website</div>
-        </a>
-
-    </div>
-    """, unsafe_allow_html=True)
+<div class="custom-circles-row">
+    <a href="?nav=dashboard" target="_self" class="glowing-circle-btn" style="--bg-fill-color: rgba(28, 131, 225, 0.12); color: #1c83e1;">
+        <div class="inner-circle-icon">📝</div>
+        <div class="inner-circle-text">Easy<br>Complaint</div>
+    </a>
+    <a href="?nav=aboutme" target="_self" class="glowing-circle-btn" style="--bg-fill-color: rgba(46, 125, 50, 0.12); color: #2e7d32;">
+        <div class="inner-circle-icon">👤</div>
+        <div class="inner-circle-text">About<br>Me</div>
+    </a>
+    <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn" style="--bg-fill-color: rgba(239, 108, 0, 0.12); color: #ef6c00;">
+        <div class="inner-circle-icon">🌐</div>
+        <div class="inner-circle-text">About<br>Website</div>
+    </a>
+</div>
+""", unsafe_allow_html=True)
 
 
 # ==============================================================================
