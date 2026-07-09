@@ -27,7 +27,7 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
         
-        # Is prompt mein sign-off message ko neutral aur dynamic kar diya gaya hai
+        # Is prompt mein AI ko har complaint ke mutabiq different closing line likhne ka kaha hai
         prompt = f"""
 You are an AI assistant for Pakistan's electricity complaint system.
 
@@ -54,8 +54,10 @@ Priority
 Estimated Time
 Recommendation
 
-At the very end of your response, you MUST sign off exactly like this:
-We appreciate your patience and understanding as we work to resolve your issue.
+Instructions for closing:
+1. Write a unique, professional closing sentence that matches the complaint type (e.g., if it's billing, mention resolving billing discrepancies; if it's outage, mention restoring power). Do NOT repeat the exact same sentence for different types of complaints.
+2. At the very end, you MUST sign off in separate lines exactly like this:
+
 Sincerely,
 AI Assistant Pakistan's Electricity Complaint System
 By: Naseeb U Rahman
