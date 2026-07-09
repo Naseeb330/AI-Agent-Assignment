@@ -136,32 +136,6 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
 </style>
 """, unsafe_allow_html=True)
 
-    # Header Render
-    st.markdown("""
-<div class="portal-header-box">
-    <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
-    <div class="portal-sub-heading">AI Powered Electricity Complaint System</div>
-</div>
-""", unsafe_allow_html=True)
-    
-    # Circles Interface Row Render (With explicit ring classes applied)
-    st.markdown("""
-<div class="custom-circles-row">
-    <a href="?nav=dashboard" target="_self" class="glowing-circle-btn blue-ring" style="--bg-fill-color: rgba(28, 131, 225, 0.12);">
-        <div class="inner-circle-icon">📝</div>
-        <div class="inner-circle-text">Easy<br>Complaint</div>
-    </a>
-    <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn orange-ring" style="--bg-fill-color: rgba(239, 108, 0, 0.12);">
-        <div class="inner-circle-icon">🌐</div>
-        <div class="inner-circle-text">About<br>Website</div>
-    </a>
-    <a href="?nav=aboutme" target="_self" class="glowing-circle-btn green-ring" style="--bg-fill-color: rgba(46, 125, 50, 0.12);">
-        <div class="inner-circle-icon">👤</div>
-        <div class="inner-circle-text">About<br>Me</div>
-    </a>
-</div>
-""", unsafe_allow_html=True)
-
 
 # ==============================================================================
 # 💻 PAGE 2: MAIN COMPLAINT DASHBOARD
