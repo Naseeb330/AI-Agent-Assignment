@@ -179,7 +179,7 @@ elif st.session_state.page == "dashboard":
 <style>
 .stTextInput input, .stTextArea textarea, div[data-baseweb="select"] div {
     color: #ffffff !important;
-    background-color: #1d2430 !important;
+    background-color: #ffffff !important;
     border: 1px solid #1c83e1 !important;
 }
 .stTextInput label, .stTextArea label, .stSelectbox label {
