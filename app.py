@@ -166,6 +166,19 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
 # ==============================================================================
 # 💻 PAGE 2: MAIN COMPLAINT DASHBOARD
 # ==============================================================================
+# --- 1. Function ko FILE KE TOP par rakhein (Imports ke baad) ---
+def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
+    api_key_fresh = os.environ.get("GEMINI_API_KEY")
+    if not api_key_fresh: return "Error: API Key nahi mili!"
+    try:
+        client_fresh = genai.Client(api_key=api_key_fresh)
+        prompt = f"You are an AI assistant for Pakistan's electricity complaint system. Customer Details: Name: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally. Heading and description text on SAME line. Double spacing BETWEEN sections. Sincerely, AI Assistant, By: Naseeb U Rahman"
+        # MODEL UPDATE: gemini-2.5-flash ki jagah 1.5-flash use karein
+        response = client_fresh.models.generate_content(model="gemini-1.5-flash", contents=prompt)
+        return response.text
+    except Exception as e: return f"Maazrat: {str(e)}"
+
+# --- 2. Ab Dashboard ka block (Ek hi baar) ---
 elif st.session_state.page == "dashboard":
     top_col1, top_col2 = st.columns([8, 2])
     with top_col1:
@@ -173,22 +186,7 @@ elif st.session_state.page == "dashboard":
     with top_col2:
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:20px;'>", unsafe_allow_html=True)
-
-def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
-        api_key_fresh = os.environ.get("GEMINI_API_KEY")
-        if not api_key_fresh: return "Error: Streamlit secrets mein GEMINI_API_KEY nahi mili!"
-        try:
-            client_fresh = genai.Client(api_key=api_key_fresh)
-            prompt = f"You are an AI assistant for Pakistan's electricity complaint system. Customer Details: Name: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally. Heading and description text on SAME line. Double spacing BETWEEN sections. Sincerely, AI Assistant, By: Naseeb U Rahman"
-            response = client_fresh.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-            return response.text
-        except Exception as e: return f"Maazrat: {str(e)}"
-            
-    elif st.session_state.page == "dashboard":
-    # Dashboard ka Header
-    st.markdown("<h2 style='color:#1c83e1;'>⚡ Dashboard Control Panel</h2>", unsafe_allow_html=True)
     
-    # Columns create karna (Yahan extra space nahi honi chahiye)
     col1, col2 = st.columns(2)
     
     with col1:
@@ -198,7 +196,6 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
         phone_input = st.text_input("📞 Mobile Number")
         city_input = st.selectbox("City", options=["Quetta", "Lahore", "Islamabad", "Karachi"])
         
-        # Complaint Options
         complaint_type_input = st.selectbox("Type", options=[
             "Power Outage (Load Shedding / Line Fault)", 
             "Low Voltage / High Voltage Fluctuations",
@@ -219,7 +216,6 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
                 st.error("Name & ID are required.")
             else:
                 with st.spinner("Processing..."):
-                    # Function call
                     result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
                     st.markdown(result)
 
