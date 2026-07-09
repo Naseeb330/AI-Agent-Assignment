@@ -2,7 +2,7 @@ from google import genai
 import os
 import streamlit as st
 
-# --- PAGE CONFIG (Lock Viewport) ---
+# --- PAGE CONFIG ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
 
 # --- SESSION STATE (Page Router) ---
@@ -14,11 +14,11 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: PERFECT ROW LANDING PAGE (RINGS LOCKED EXACTLY AROUND LIGHT BUTTONS)
+# 🎯 PAGE 1: LANDING PAGE (BUTTONS IN CIRCLES WITH LIGHT GLOW FILL)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Advanced CSS Injection to combine spinning rings directly onto the native button borders
+    # Advanced CSS Injection for perfect overlay and transparent-glow sync
     st.markdown("""
     <style>
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
@@ -27,14 +27,14 @@ if st.session_state.page == "landing":
     }
     
     .block-container {
-        padding-top: 2.5rem !important;
+        padding-top: 3rem !important;
         padding-bottom: 0rem !important;
     }
 
-    /* Top Title Header Centering Block */
-    .portal-title-wrapper {
+    /* Centered Header Styles */
+    .portal-header-box {
         text-align: center;
-        margin-bottom: 45px !important;
+        margin-bottom: 50px !important;
         width: 100%;
     }
     
@@ -54,11 +54,11 @@ if st.session_state.page == "landing":
         margin-top: 6px;
     }
 
-    /* FORCE STREAMLIT GRID TO STAY IN A PERFECT ROW HIERARCHY */
+    /* Force Streamlit Columns into a Strict Horizontal Layout */
     [data-testid="stHorizontalBlock"] {
-        max-width: 850px !important;
+        max-width: 900px !important;
         margin: 0 auto !important;
-        gap: 40px !important;
+        gap: 50px !important;
         display: flex !important;
         flex-direction: row !important;
         justify-content: center !important;
@@ -66,120 +66,134 @@ if st.session_state.page == "landing":
     }
 
     [data-testid="column"] {
-        width: 160px !important;
+        width: 180px !important;
         flex: none !important;
     }
 
-    /* Master Circular Container Box */
-    .unified-ring-container {
+    /* Master Circular Component Box with Soft Glow Fill Effect */
+    .glow-circle-card {
         position: relative;
-        width: 155px;
-        height: 155px;
+        width: 170px;
+        height: 170px;
         margin: 0 auto !important;
+        border-radius: 50%;
+        /* Halka filled light background color dynamic setting using CSS variables */
+        background: var(--glow-bg-color) !important;
+        box-shadow: inset 0 0 20px var(--glow-bg-color), 0 0 10px rgba(0,0,0,0.05);
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    /* Pure Dynamic Border Light Ring Rotating Directly Around the Target Box */
-    .unified-ring-container::before {
+    /* The Spinning Neon Edge Ring Layer */
+    .glow-circle-card::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
         border-radius: 50%;
-        padding: 3px; /* Exact thin line width */
+        padding: 3.5px; /* Spinning Ring Line Thickness */
         background: linear-gradient(0deg, transparent, transparent, var(--neon-accent-color));
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
-        animation: spinSystemAround 2.2s linear infinite;
+        animation: spinOuterRing 2.5s linear infinite;
         pointer-events: none;
-        z-index: 1;
+        z-index: 2;
     }
 
-    @keyframes spinSystemAround {
+    @keyframes spinOuterRing {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Convert Streamlit Native Element Container into a perfect fitting circle */
-    div.unified-ring-container > div.stButton {
-        width: 145px !important;
-        height: 145px !important;
+    /* Scale effect on complete card hover */
+    .glow-circle-card:hover {
+        transform: scale(1.04);
+        box-shadow: inset 0 0 30px var(--glow-bg-color), 0 0 20px var(--glow-bg-color);
+    }
+
+    /* Injecting Native Streamlit Button to fill 100% of the internal space */
+    div.glow-circle-card > div.stButton {
+        width: 100% !important;
+        height: 100% !important;
         margin: 0px !important;
         padding: 0px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 5 !important;
     }
 
-    /* Modify Button to be completely Transparent, Light, and Circular inside the rotating ring */
-    div.unified-ring-container > div.stButton > button {
-        width: 145px !important;
-        height: 145px !important;
+    /* Making the Button completely customized to show clean text inside the circle */
+    div.glow-circle-card > div.stButton > button {
+        width: 100% !important;
+        height: 100% !important;
         border-radius: 50% !important;
-        background: transparent !important; /* light/no color background */
+        background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        color: #333 !important;
-        font-size: 15px !important;
-        font-weight: bold !important;
-        line-height: 1.3 !important;
+        color: #222 !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        line-height: 1.4 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         white-space: pre-line !important;
         cursor: pointer !important;
-        transition: transform 0.2s ease;
         margin: 0 !important;
+        padding: 10px !important;
     }
 
-    div.unified-ring-container > div.stButton > button:hover {
-        transform: scale(1.05);
-        background: rgba(0, 0, 0, 0.02) !important;
-    }
-
-    div.unified-ring-container > div.stButton > button:active,
-    div.unified-ring-container > div.stButton > button:focus {
+    div.glow-circle-card > div.stButton > button:hover,
+    div.glow-circle-card > div.stButton > button:active,
+    div.glow-circle-card > div.stButton > button:focus {
         background: transparent !important;
+        color: #000 !important;
         box-shadow: none !important;
         border: none !important;
     }
 
+    /* Dark Mode Text Visibility Optimization */
     @media (prefers-color-scheme: dark) {
-        div.unified-ring-container > div.stButton > button { color: #fff !important; }
-        div.unified-ring-container > div.stButton > button:hover { background: rgba(255, 255, 255, 0.02) !important; }
+        div.glow-circle-card > div.stButton > button { color: #ffffff !important; }
+        div.glow-circle-card > div.stButton > button:hover { color: #ffffff !important; }
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Header Block Insertion
+    # Main Header Rendering
     st.markdown("""
-    <div class="portal-title-wrapper">
+    <div class="portal-header-box">
         <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
         <div class="portal-sub-heading">AI Powered Electricity Complaint System</div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Safe Column Elements forcing absolute Single Row Architecture
+    # 3-Column Native Row Execution
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="unified-ring-container" style="--neon-accent-color: #1c83e1;">', unsafe_allow_html=True)
-        if st.button("📝\n\nEasy\nComplaint", key="dash_action_node"):
+        # --neon-accent-color controls the moving line, --glow-bg-color controls the inside soft fill
+        st.markdown('<div class="glow-circle-card" style="--neon-accent-color: #1c83e1; --glow-bg-color: rgba(28, 131, 225, 0.12);">', unsafe_allow_html=True)
+        if st.button("📝\n\nEasy\nComplaint", key="btn_easy_complaint"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        st.markdown('<div class="unified-ring-container" style="--neon-accent-color: #2e7d32;">', unsafe_allow_html=True)
-        if st.button("👤\n\nAbout\nMe", key="me_action_node"):
+        st.markdown('<div class="glow-circle-card" style="--neon-accent-color: #2e7d32; --glow-bg-color: rgba(46, 125, 50, 0.12);">', unsafe_allow_html=True)
+        if st.button("👤\n\nAbout\nMe", key="btn_about_me"):
             switch_page("aboutme")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        st.markdown('<div class="unified-ring-container" style="--neon-accent-color: #ef6c00;">', unsafe_allow_html=True)
-        if st.button("🌐\n\nAbout\nWebsite", key="web_action_node"):
+        st.markdown('<div class="glow-circle-card" style="--neon-accent-color: #ef6c00; --glow-bg-color: rgba(239, 108, 0, 0.12);">', unsafe_allow_html=True)
+        if st.button("🌐\n\nAbout\nWebsite", key="btn_about_website"):
             switch_page("aboutweb")
         st.markdown('</div>', unsafe_allow_html=True)
 
