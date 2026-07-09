@@ -215,16 +215,25 @@ elif st.session_state.page == "aboutme":
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:30px;'>", unsafe_allow_html=True)
     
+    # 💡 TIP: Agar aapke paas apni image ka direct URL hai, toh niche 'https://via.placeholder.com/150' ki jagah apna link paste kar dein.
+    # Agar local image use karni hai toh direct image file ka naam likh dein jaise: src="my_picture.jpg"
+    
     st.markdown("""
     <div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">
+        
+        <!-- 📸 AAPKI PROFILE PICTURE YAHAN AAYEGI -->
+        <div style="margin-bottom: 20px;">
+            <img src="naseeb-blue" style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid #2e7d32; object-fit: cover; box-shadow: 0 0 15px rgba(46,125,50,0.5);">
+        </div>
+
         <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold;">👨‍💻 About the Developer</h1>
         <p style="color: #888; font-size: 18px; font-style: italic; margin-bottom: 25px;">"Engineering Smarter Infrastructure with AI"</p>
         <hr style="border-color: #2e7d32; width: 50%; margin: 0 auto 25px auto;">
+        
         <table style="width: 100%; font-size: 18px; color: white; border-collapse: collapse; text-align: left;">
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Role:</td><td style="padding: 12px; color: #ddd;">AI Assistant Core Developer</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">Student of Electrical Engineering Department</td></tr>
-            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Institute:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
             <tr><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Domain Interest:</td><td style="padding: 12px; color: #ddd;">Smart Grid Systems, Automation, Power Engineering & AI Integrations</td></tr>
         </table>
         <br>
