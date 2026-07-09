@@ -89,10 +89,23 @@ with col1:
 with col2:
     st.subheader("📋 Complaint Status")
     
-    # Ab sirf button click hone par hi niche wala logic chalega, koi extra spinner ya placeholder text nahi dikhega
     if submit:
         if name.strip() == "" or consumer_id.strip() == "":
             st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
         else:
             result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
             st.info(result)
+
+# --- FOOTER (Aakhir mein aapka naam) ---
+st.markdown("""
+<br><br><br>
+<hr>
+<div style="text-align:center; color:#555; padding:10px;">
+    <p style="font-size:16px; font-weight:bold; margin:0;">
+        ⚡ AI Assistant: Pakistan's Electricity Complaint System
+    </p>
+    <p style="font-size:14px; font-style:italic; margin:5px 0 0 0; color:#1c83e1;">
+        Developed by: Naseeb U Rahman
+    </p>
+</div>
+""", unsafe_allow_html=True)
