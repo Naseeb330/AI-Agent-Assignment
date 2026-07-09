@@ -205,7 +205,7 @@ elif st.session_state.page == "dashboard":
 
 
 # ==============================================================================
-# 👤 PAGE 3: CENTRALIZED ABOUT ME
+# 👤 PAGE 3: CENTRALIZED ABOUT ME (WITH SAFE LOCAL IMAGE LOADING)
 # ==============================================================================
 elif st.session_state.page == "aboutme":
     top_col1, top_col2 = st.columns([8, 2])
@@ -215,15 +215,28 @@ elif st.session_state.page == "aboutme":
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:30px;'>", unsafe_allow_html=True)
     
-    # 💡 TIP: Agar aapke paas apni image ka direct URL hai, toh niche 'https://via.placeholder.com/150' ki jagah apna link paste kar dein.
-    # Agar local image use karni hai toh direct image file ka naam likh dein jaise: src="my_picture.jpg"
+    # 📸 LOCAL IMAGE LOADING LOGIC (Bina kisi error ke image load karne ke liye)
+    import base64
     
-    st.markdown("""
+    # Apni picture ka sahi naam aur format yahan likhein (e.g., 'naseeb.jpg' ya 'my_picture.png')
+    image_filename = "my_picture.jpg" 
+    
+    img_html = ""
+    if os.path.exists(image_filename):
+        with open(image_filename, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode()
+        # HTML friendly string format
+        img_html = f'<img src="data:image/jpeg;base64,{encoded_string}" style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid #2e7d32; object-fit: cover; box-shadow: 0 0 15px rgba(46,125,50,0.5);">'
+    else:
+        # Agar file na mile toh generic placeholder auto-load hoga taake portal crash na ho
+        img_html = '<div style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid #2e7d32; background: #222; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 15px rgba(46,125,50,0.5); color: #2e7d32; font-size: 40px;">👤</div>'
+
+    st.markdown(f"""
     <div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">
         
-        <!-- 📸 AAPKI PROFILE PICTURE YAHAN AAYEGI -->
-        <div style="margin-bottom: 20px;">
-            <img src="naseeb-blue" style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid #2e7d32; object-fit: cover; box-shadow: 0 0 15px rgba(46,125,50,0.5);">
+        <!-- Render encoded image dynamically -->
+        <div style="margin-bottom: 20px; display: flex; justify-content: center;">
+            {img_html}
         </div>
 
         <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold;">👨‍💻 About the Developer</h1>
