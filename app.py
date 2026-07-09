@@ -174,16 +174,25 @@ elif st.session_state.page == "dashboard":
         if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
     st.markdown("<hr style='margin-top:5px; margin-bottom:20px;'>", unsafe_allow_html=True)
 
-    def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
-        api_key_fresh = os.environ.get("GEMINI_API_KEY")
-        if not api_key_fresh: return "Error: Streamlit secrets mein GEMINI_API_KEY nahi mili!"
-        try:
-            client_fresh = genai.Client(api_key=api_key_fresh)
-            prompt = f"You are an AI assistant for Pakistan's electricity complaint system. Customer Details: Name: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally. Heading and description text on SAME line. Double spacing BETWEEN sections. Sincerely, AI Assistant, By: Naseeb U Rahman"
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            response = model.generate_content(prompt)
-            return response.text
-        except Exception as e: return f"Maazrat: {str(e)}"
+ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key: return "Error: API Key missing!"
+    
+    try:
+        # Client initialize karein
+        client = genai.Client(api_key=api_key)
+        
+        # Prompt taiyaar karein
+        prompt_text = f"Customer: {name}, ID: {consumer_id}, Type: {complaint_type}, Details: {complaint}"
+        
+        # Model call - 'gemini-1.5-flash' ko directly pass karein
+        response = client.models.generate_content(
+            model='gemini-1.5-flash', 
+            contents=prompt_text
+        )
+        return response.text
+    except Exception as e:
+        return f"Error: {str(e)}"
 
     col1, col2 = st.columns(2)
     with col1:
