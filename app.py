@@ -155,9 +155,9 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
         <div class="inner-circle-icon">🌐</div>
         <div class="inner-circle-text">About<br>Website</div>
     </a>
-    <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn orange-ring" style="--bg-fill-color: rgba(239, 108, 0, 0.12);">
-        <div class="inner-circle-icon">🌐</div>
-        <div class="inner-circle-text">About<br>Website</div>
+    <a href="?nav=aboutme" target="_self" class="glowing-circle-btn green-ring" style="--bg-fill-color: rgba(46, 125, 50, 0.12);">
+        <div class="inner-circle-icon">👤</div>
+        <div class="inner-circle-text">About<br>Me</div>
     </a>
 </div>
 """, unsafe_allow_html=True)
