@@ -14,11 +14,11 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: LANDING PAGE (NATIVE BUTTONS TRANSFORMED TO GLOWING ROW CIRCLES)
+# 🎯 PAGE 1: LANDING PAGE (MOVING NATIVE BUTTONS INSIDE EXISTING GLOW CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Super strong CSS selectors to force native Streamlit buttons into glowing row circles
+    # CSS injection to force existing native buttons into the exact centers of the circles
     st.markdown("""
     <style>
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
@@ -54,7 +54,7 @@ if st.session_state.page == "landing":
         margin-top: 6px;
     }
 
-    /* Force Streamlit horizontal block layout to behave like a strict aligned row */
+    /* Force Streamlit horizontal blocks into a strict unified row layout */
     [data-testid="stHorizontalBlock"] {
         max-width: 900px !important;
         margin: 0 auto !important;
@@ -70,7 +70,7 @@ if st.session_state.page == "landing":
         flex: none !important;
     }
 
-    /* Custom Unique Key Wrapper styling to host spinning neon borders and inside fill glows */
+    /* The exact circles containers matching your screenshot's structure */
     .circle-node-blue, .circle-node-green, .circle-node-orange {
         position: relative;
         width: 170px;
@@ -82,12 +82,12 @@ if st.session_state.page == "landing":
         justify-content: center !important;
     }
 
-    /* Specific continuous background tinting animations */
+    /* Retaining your exact soft gradient fills */
     .circle-node-blue { background: rgba(28, 131, 225, 0.12) !important; box-shadow: inset 0 0 20px rgba(28, 131, 225, 0.2); }
     .circle-node-green { background: rgba(46, 125, 50, 0.12) !important; box-shadow: inset 0 0 20px rgba(46, 125, 50, 0.2); }
     .circle-node-orange { background: rgba(239, 108, 0, 0.12) !important; box-shadow: inset 0 0 20px rgba(239, 108, 0, 0.2); }
 
-    /* Ring Generators targeting outer layout bounds */
+    /* The outer spinning surface active rings */
     .circle-node-blue::before, .circle-node-green::before, .circle-node-orange::before {
         content: '';
         position: absolute;
@@ -110,19 +110,23 @@ if st.session_state.page == "landing":
         100% { transform: rotate(360deg); }
     }
 
-    /* Target native Streamlit Button inside our wrappers to completely fit and go circular */
+    /* Crucial Fixed: Force Streamlit button container to overlay 100% inside the circle frame */
     div[class^="circle-node-"] div.stButton {
         width: 100% !important;
         height: 100% !important;
         margin: 0px !important;
         padding: 0px !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
     }
 
+    /* Transform the rectangular button shape into a transparent layer inside the circle */
     div[class^="circle-node-"] div.stButton > button {
         width: 100% !important;
         height: 100% !important;
         border-radius: 50% !important;
-        background: transparent !important;
+        background: transparent !important; /* Removes the distracting white square border box */
         border: none !important;
         box-shadow: none !important;
         color: #222 !important;
@@ -169,6 +173,7 @@ if st.session_state.page == "landing":
     
     with col1:
         st.markdown('<div class="circle-node-blue">', unsafe_allow_html=True)
+        # Button is now safely nested inside the circle wrapper
         if st.button("📝\n\nEasy\nComplaint", key="native_btn_dash"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
