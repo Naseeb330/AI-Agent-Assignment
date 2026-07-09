@@ -14,172 +14,171 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: RE-ALIGNED LANDING PAGE WITH WRAPPING LIGHT SPINNING NEON RINGS
+# 🎯 PAGE 1: PURE RE-DESIGNED CLEAN LANDING PAGE
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Custom CSS Injector for making circles spin seamlessly around your core buttons
+    # Clean Injectable Styles for Centering and Glow Circles
     st.markdown("""
     <style>
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
+    html, body, [data-testid="stAppViewContainer"] {
         max-height: 100vh !important;
         overflow: hidden !important;
     }
     
     .block-container {
         padding-top: 2rem !important;
-        padding-bottom: 0rem !important;
     }
 
-    /* Absolute Global Centering Framework */
-    .master-wrapper-center {
+    /* Master layout centering everything directly */
+    .portal-landing-container {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        margin: 0 auto;
     }
     
-    /* Title Margin Controls */
-    .header-group-box {
-        margin-bottom: 40px !important;
-        text-align: center;
+    .portal-header-box {
+        margin-bottom: 30px;
     }
     
-    .main-heading {
+    .portal-title {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-size: 46px;
         font-weight: 800;
-        margin: 0px 0px 2px 0px !important;
+        margin: 0;
     }
     
-    .sub-heading {
+    .portal-subtitle {
         color: #666;
         font-size: 18px;
         font-weight: 500;
-        margin: 0px !important;
+        margin-top: 5px;
     }
 
-    /* Sync Grid Row Columns */
-    [data-testid="stHorizontalBlock"] {
-        justify-content: center !important;
-        max-width: 900px !important;
-        margin: 0 auto !important;
-        gap: 40px !important;
+    /* Row wrapper for circles to sit nicely next to each other */
+    .circles-flex-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 60px;
+        margin-top: 20px;
+        flex-wrap: wrap;
     }
 
-    /* Circular Frame wrapping around the native Streamlit button */
-    .spinning-neon-wrapper {
+    /* Interactive Circle Structure */
+    .neon-glowing-circle {
         position: relative;
         width: 150px;
         height: 150px;
-        margin: 0 auto;
-    }
-
-    /* Light Glow Spinning Neon Rings Around the Buttons */
-    .neon-spin-ring-element {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 150px;
-        height: 150px;
         border-radius: 50%;
-        background: linear-gradient(0deg, transparent, transparent, var(--ring-color-glow));
-        animation: rotateRingElement 2s linear infinite;
-        z-index: 1;
-        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none !important;
     }
 
-    @keyframes rotateRingElement {
+    /* Soft border outline that rotates */
+    .neon-glowing-circle::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: 50%;
+        padding: 3px; /* Thin line */
+        background: linear-gradient(0deg, transparent, transparent, var(--neon-glow));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: rotateRing 2.5s linear infinite;
+    }
+
+    @keyframes rotateRing {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Overwrite Streamlit Native Box Layout into Transparent Circles */
-    div.spinning-neon-wrapper > div.stButton {
-        position: absolute !important;
-        top: 4px !important;
-        left: 4px !important;
-        width: 142px !important;
-        height: 142px !important;
-        z-index: 5 !important;
-        margin: 0px !important;
-        padding: 0px !important;
+    .neon-glowing-circle:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 20px var(--neon-glow);
     }
 
-    div.spinning-neon-wrapper > div.stButton > button {
-        width: 142px !important;
-        height: 142px !important;
-        border-radius: 50% !important; /* Converts square box to circle */
-        background: transparent !important; /* Removes default box color tint */
-        border: 1px solid transparent !important;
-        box-shadow: none !important;
-        color: inherit !important;
-        font-size: 14px !important;
-        font-weight: bold !important;
-        line-height: 1.3 !important;
-        white-space: pre-line !important;
-        cursor: pointer !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        transition: transform 0.2s ease;
-    }
-    
-    /* Interactive Hover Tactile Feedback */
-    div.spinning-neon-wrapper > div.stButton > button:hover {
-        transform: scale(1.05);
-        background: rgba(255, 255, 255, 0.02) !important;
+    .circle-emoji {
+        font-size: 32px;
+        margin-bottom: 5px;
     }
 
-    div.spinning-neon-wrapper > div.stButton > button:active,
-    div.spinning-neon-wrapper > div.stButton > button:focus {
+    .circle-label {
+        font-size: 15px;
+        font-weight: bold;
+        color: #333;
+        line-height: 1.2;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .circle-label { color: #fff; }
+    }
+
+    /* Clean Overlay to make standard buttons look like transparent links inside the circles */
+    .invisible-target-btn div.stButton > button {
         background: transparent !important;
+        border: none !important;
         box-shadow: none !important;
+        color: transparent !important;
+        width: 150px !important;
+        height: 150px !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        border-radius: 50% !important;
+        z-index: 10 !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Master Frame Component Placement
-    st.markdown('<div class="master-wrapper-center">', unsafe_allow_html=True)
+    # Render Centered Frame
+    st.markdown('<div class="portal-landing-container">', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="header-group-box">
-        <div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>
-        <div class="sub-heading">AI Powered Electricity Complaint System</div>
+    <div class="portal-header-box">
+        <div class="portal-title">⚡ WAPDA Smart Complaint Portal</div>
+        <div class="portal-subtitle">AI Powered Electricity Complaint System</div>
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+    # We create the clean Row container
+    st.markdown('<div class="circles-flex-row">', unsafe_allow_html=True)
     
-    with col1:
-        st.markdown('<div class="spinning-neon-wrapper" style="--ring-color-glow: #1c83e1;">', unsafe_allow_html=True)
-        st.markdown('<div class="neon-spin-ring-element"></div>', unsafe_allow_html=True)
-        # Content maps dynamically inside the circle frame layout
-        if st.button("📝\n\nEasy\nComplaint", key="btn_node_dash"):
-            switch_page("dashboard")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-    with col2:
-        st.markdown('<div class="spinning-neon-wrapper" style="--ring-color-glow: #2e7d32;">', unsafe_allow_html=True)
-        st.markdown('<div class="neon-spin-ring-element"></div>', unsafe_allow_html=True)
-        if st.button("👤\n\nAbout\nMe", key="btn_node_me"):
-            switch_page("aboutme")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-    with col3:
-        st.markdown('<div class="spinning-neon-wrapper" style="--ring-color-glow: #ef6c00;">', unsafe_allow_html=True)
-        st.markdown('<div class="neon-spin-ring-element"></div>', unsafe_allow_html=True)
-        if st.button("🌐\n\nAbout\nWebsite", key="btn_node_web"):
-            switch_page("aboutweb")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
+    # Circle 1: Easy Complaint
+    st.markdown('<div class="neon-glowing-circle invisible-target-btn" style="--neon-glow: #1c83e1;">', unsafe_allow_html=True)
+    st.markdown('<div class="circle-emoji">📝</div><div class="circle-label">Easy<br>Complaint</div>', unsafe_allow_html=True)
+    if st.button("c1", key="action_c1"):
+        switch_page("dashboard")
     st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Circle 2: About Me
+    st.markdown('<div class="neon-glowing-circle invisible-target-btn" style="--neon-glow: #2e7d32;">', unsafe_allow_html=True)
+    st.markdown('<div class="circle-emoji">👤</div><div class="circle-label">About<br>Me</div>', unsafe_allow_html=True)
+    if st.button("c2", key="action_c2"):
+        switch_page("aboutme")
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Circle 3: About Website
+    st.markdown('<div class="neon-glowing-circle invisible-target-btn" style="--neon-glow: #ef6c00;">', unsafe_allow_html=True)
+    st.markdown('<div class="circle-emoji">🌐</div><div class="circle-label">About<br>Website</div>', unsafe_allow_html=True)
+    if st.button("c3", key="action_c3"):
+        switch_page("aboutweb")
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True) # End Row
+    st.markdown('</div>', unsafe_allow_html=True) # End Center Layout
 
 
 # ==============================================================================
