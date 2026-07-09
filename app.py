@@ -8,51 +8,105 @@ api_key = os.environ.get("GEMINI_API_KEY")
 # Client initialize karein (Naya Google GenAI SDK)
 client = genai.Client(api_key=api_key)
 
-# AI Agent ka function
-def chat_with_agent(user_message):
+# Test connection (raat wala check)
+try:
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents="Hello, introduce yourself"
+    )
+    print("API connected successfully")
+except Exception as e:
+    print(f"API Connection Error: {e}")
+
+# Shikayat darj karne ka main function (Aapka original logic)
+def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
+    prompt = f"""
+You are an AI assistant for Pakistan's electricity complaint system.
+
+Customer Details:
+
+Name: {name}
+Consumer ID: {consumer_id}
+Phone: {phone}
+City: {city}
+
+Complaint Type:
+{complaint_type}
+
+Complaint:
+{complaint}
+
+Reply professionally.
+
+Mention:
+
+Complaint Status
+Concerned Company
+Priority
+Estimated Time
+Recommendation
+"""
     try:
         response = client.models.generate_content(
             model="gemini-2.5-flash",
-            contents=user_message,
-            config={
-                "system_instruction": (
-                    "Aap WAPDA ke aala afsar aur aik behtareen AI Assistant hain. "
-                    "Aapka kaam sarfeen (users) ki bijli se mutaliq shikayaat (complaints) "
-                    "suna, unhein darj karna, aur unka hal batana hai. "
-                    "Hamesha urdu zubaan mein, nihayat hi tameez, khuloos aur adab se baat karein. "
-                    "Aapka naam 'WAPDA Smart Support Agent' hai."
-                )
-            }
+            contents=prompt
         )
         return response.text
     except Exception as e:
         return f"Maazrat, koi takneeki masla aa gaya hai: {str(e)}"
 
-# --- STREAMLIT UI ---
-st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡")
+# --- STREAMLIT UI DESIGN (Gradio Layout ki tarah) ---
+st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
 
-st.title("⚡ WAPDA Smart Complaint Portal")
-st.write("Khush aamdeed! Aap bijli se mutaliq apni shikayat niche darj kar sakte hain.")
+# Center Aligned Headers (Gradio ki tarah Markdown text)
+st.markdown("""
+<div style="text-align:center">
+    <h3 style="color:#ff4b4b;">⚠️ Note: This is Only for Educational Purpose</h3>
+    <h4 style="color:#555;">By Naseeb U Rahman</h4>
+    <h1 style="margin-top:-10px;">⚡ WAPDA Smart Complaint Portal</h1>
+    <h3 style="color:#1c83e1; margin-top:-10px;">AI Powered by Google Gemini</h3>
+    <p>Welcome! Please fill the details below.</p>
+    <hr>
+</div>
+""", unsafe_allow_html=True)
 
-# Chat history ya state initialize karein
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+# Gradio ke row/column structure ko Streamlit ke columns mein badla
+col1, col2 = st.columns(2)
 
-# Input form
-user_input = st.text_input("Apni shikayat ya sawal yahan likhein:", key="user_input_field")
+# --- LEFT COLUMN (Form Inputs) ---
+with col1:
+    st.subheader("📋 Consumer Form")
+    name = st.text_input("👤 Consumer Name")
+    consumer_id = st.text_input("🆔 Consumer ID")
+    phone = st.text_input("📞 Mobile Number")
+    
+    city = st.selectbox(
+        "🏙️ City",
+        options=["Quetta", "Lahore", "Islamabad", "Karachi", "Peshawar", "Multan", "Hyderabad", "Sukkur"]
+    )
+    
+    complaint_type = st.selectbox(
+        "⚡ Complaint Type",
+        options=["Power Outage", "Low Voltage", "High Voltage", "Billing Issue", "Meter Fault", "Transformer Fault"]
+    )
+    
+    complaint = st.text_area("📝 Complaint", height=150)
+    
+    submit = st.button("📤 Register Complaint", use_container_width=True)
 
-if st.button("Shikayat Darj Karein"):
-    if user_input.strip() != "":
-        # AI se jawab lein
-        with st.spinner("WAPDA Agent jawab likh raha hai..."):
-            bot_reply = chat_with_agent(user_input)
-        
-        # History mein add karein
-        st.session_state.chat_history.append((user_input, bot_reply))
-
-# History display karein (Naye messages upar aayenge)
-if st.session_state.chat_history:
-    st.write("### 💬 Aapki Guftagu:")
-    for user_msg, bot_msg in reversed(st.session_state.chat_history):
-        st.info(f"**Aap:** {user_msg}")
-        st.success(f"**WAPDA Support Agent:** {bot_msg}")
+# --- RIGHT COLUMN (Output Status) ---
+with col2:
+    st.subheader("📋 Complaint Status")
+    
+    # Jab tak button click nahi hoga, default text dikhega
+    if submit:
+        if name.strip() == "" or consumer_id.strip() == "":
+            st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
+        else:
+            with st.spinner("WAPDA Agent aapki shikayat ka jaiza le raha hai..."):
+                result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
+                
+            # Response ko aik khoobsurat box mein dikhane ke liye st.info ka istemal
+            st.info(result)
+    else:
+        st.write("Aapka response yahan nazar aayega jab aap form submit karenge.")
