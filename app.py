@@ -34,6 +34,17 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
     overflow: hidden !important;
 }
 
+/* --- TEXT INPUT & FIELD BUG FIXES --- */
+.stTextInput input, .stTextArea textarea, div[data-baseweb="select"] div {
+    color: #ffffff !important;
+    background-color: #1d2430 !important;
+    border: 1px solid #1c83e1 !important;
+}
+.stTextInput label, .stTextArea label, .stSelectbox label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
 .block-container {
     padding-top: 3.5rem !important;
     padding-bottom: 0rem !important;
@@ -88,7 +99,6 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Base style for the spinning animated outer border */
 .glowing-circle-btn::before {
     content: '';
     position: absolute;
@@ -102,7 +112,6 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
     pointer-events: none;
 }
 
-/* Explicit color mapping for the spinning rings */
 .blue-ring::before { background: linear-gradient(0deg, transparent, transparent, #1c83e1); }
 .green-ring::before { background: linear-gradient(0deg, transparent, transparent, #2e7d32); }
 .orange-ring::before { background: linear-gradient(0deg, transparent, transparent, #ef6c00); }
@@ -127,11 +136,7 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
     font-weight: 700;
     line-height: 1.3;
     text-align: center;
-    color: #222 !important;
-}
-
-@media (prefers-color-scheme: dark) {
-    .inner-circle-text { color: #ffffff !important; }
+    color: #ffffff !important;
 }
 </style>
 """, unsafe_allow_html=True)
