@@ -2,7 +2,7 @@ from google import genai
 import os
 import streamlit as st
 
-# --- PAGE CONFIG (Force Wide & Lock Layout) ---
+# --- PAGE CONFIG (Lock Layout) ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
 
 # --- SESSION STATE (Page Router) ---
@@ -14,25 +14,25 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: PERFECT DYNAMIC LANDING PAGE (INTEGRATED CLICKABLE SPINNING BUTTONS)
+# 🎯 PAGE 1: FIXED LANDING PAGE (PERFECT WORKING SPINNING CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Custom CSS to lock screen size, center title, and make the spinning circles the actual buttons
+    # Injection of concrete HTML structure styling
     st.markdown("""
     <style>
-    /* Absolute view height lock to completely remove scrollbars */
+    /* Complete scroll bar elimination */
     html, body, [data-testid="stAppViewContainer"] {
         max-height: 100vh !important;
         overflow: hidden !important;
     }
     
     .block-container {
-        padding-top: 2.5rem !important;
+        padding-top: 3rem !important;
         padding-bottom: 0rem !important;
     }
     
-    /* Center alignment wrapper */
+    /* Central Alignment */
     .landing-container {
         display: flex;
         flex-direction: column;
@@ -42,14 +42,13 @@ if st.session_state.page == "landing":
         width: 100%;
     }
     
-    /* Colorful Neon Style Main Heading */
+    /* Colorful Title Setup */
     .main-heading {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-size: 46px;
         font-weight: 800;
-        text-align: center;
         margin-bottom: 5px;
     }
     
@@ -57,94 +56,129 @@ if st.session_state.page == "landing":
         color: #555;
         font-size: 19px;
         font-weight: 500;
-        text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 35px; /* Decreased distance between title and buttons */
     }
 
-    /* Fixed size container for the integrated spinning buttons */
-    .btn-frame-box {
+    /* Fixed Component Box Wrapper */
+    .button-card-wrapper {
         position: relative;
-        width: 190px;
-        height: 190px;
+        width: 170px;
+        height: 170px;
         margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
-    /* Target the native Streamlit button directly to transform it into the colorful spinning circle */
-    div.btn-frame-box > div.stButton > button {
-        width: 180px !important;
-        height: 180px !important;
-        border-radius: 50% !important;
-        background: var(--bg-color) !important;
-        color: white !important;
-        font-size: 17px !important;
-        font-weight: bold !important;
-        border: 4px solid transparent !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        white-space: pre-wrap !important;
-        line-height: 1.4 !important;
-        box-shadow: 0px 8px 25px rgba(0,0,0,0.25), inset 0px 0px 15px rgba(0,0,0,0.3) !important;
-        transition: all 0.4s ease-in-out !important;
-    }
-
-    /* Generate the continuous spinning colorful neon border effect natively over the button */
-    div.btn-frame-box > div.stButton > button::before {
-        content: '';
+    /* Solid Concrete Spinning Circle Background */
+    .spinning-neon-ring {
         position: absolute;
-        inset: -4px;
+        width: 170px;
+        height: 170px;
         border-radius: 50%;
         background: linear-gradient(0deg, transparent, transparent, var(--neon-color));
-        animation: spinBorder 2s linear infinite;
-        z-index: -1;
+        animation: spinObject 2s linear infinite;
+        z-index: 1;
     }
 
-    @keyframes spinBorder {
+    @keyframes spinObject {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Hover Interaction Logic */
-    div.btn-frame-box > div.stButton > button:hover {
-        background: var(--neon-color) !important;
-        box-shadow: 0px 0px 30px var(--neon-color) !important;
-        transform: translateY(-4px) scale(1.02);
-        color: #ffffff !important;
+    /* Center masking disk inside the spinning frame */
+    .inner-disk-core {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 158px;
+        height: 158px;
+        background-color: var(--bg-color);
+        border-radius: 50%;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);
+    }
+
+    .inner-disk-core .emoji {
+        font-size: 26px;
+        margin-bottom: 3px;
+    }
+
+    .inner-disk-core .label-txt {
+        font-size: 15px;
+        font-weight: bold;
+        line-height: 1.2;
+    }
+
+    /* Force Streamlit button container directly over the custom circle */
+    div.button-card-wrapper > div.stButton {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 170px !important;
+        height: 170px !important;
+        z-index: 10 !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
+    /* Make the original Streamlit element invisible but completely clickable */
+    div.button-card-wrapper > div.stButton > button {
+        width: 170px !important;
+        height: 170px !important;
+        border-radius: 50% !important;
+        background: transparent !important;
+        border: none !important;
+        color: transparent !important;
+        box-shadow: none !important;
+        cursor: pointer !important;
+    }
+    
+    /* Hover glow feedback */
+    .button-card-wrapper:hover .inner-disk-core {
+        background-color: var(--neon-color) !important;
+        box-shadow: 0px 0px 20px var(--neon-color) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Rendering the Layout
+    # Building UI elements 
     st.markdown('<div class="landing-container">', unsafe_allow_html=True)
     st.markdown('<div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-heading">AI Powered Electricity Complaint System</div>', unsafe_allow_html=True)
     
-    # 3 Column Dynamic System
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        # Easy Complaint - Deep Blue Solid Circle with Spinning Bright Blue Neon Border
-        st.markdown('<div class="btn-frame-box" style="--bg-color: #0f4c81; --neon-color: #1c83e1;">', unsafe_allow_html=True)
-        if st.button("📝\nEasy\nComplaint", key="main_dash_btn"):
+        st.markdown('<div class="button-card-wrapper">', unsafe_allow_html=True)
+        # Custom HTML Circle Layers (Blue)
+        st.markdown('<div class="spinning-neon-ring" style="--neon-color: #1c83e1;"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="inner-disk-core" style="--bg-color: #0f4c81; --neon-color: #1c83e1;"><div class="emoji">📝</div><div class="label-txt">Easy<br>Complaint</div></div>', unsafe_allow_html=True)
+        # Overlay Transparent Active Clicker
+        if st.button("Click1", key="act_dash"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        # About Me - Deep Green Solid Circle with Spinning Vivid Green Neon Border
-        st.markdown('<div class="btn-frame-box" style="--bg-color: #1b4d22; --neon-color: #2e7d32;">', unsafe_allow_html=True)
-        if st.button("👤\nAbout\nMe", key="main_me_btn"):
+        st.markdown('<div class="button-card-wrapper">', unsafe_allow_html=True)
+        # Custom HTML Circle Layers (Green)
+        st.markdown('<div class="spinning-neon-ring" style="--neon-color: #2e7d32;"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="inner-disk-core" style="--bg-color: #1b4d22; --neon-color: #2e7d32;"><div class="emoji">👤</div><div class="label-txt">About<br>Me</div></div>', unsafe_allow_html=True)
+        # Overlay Transparent Active Clicker
+        if st.button("Click2", key="act_me"):
             switch_page("aboutme")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        # About Website - Deep Orange Solid Circle with Spinning Bright Orange Neon Border
-        st.markdown('<div class="btn-frame-box" style="--bg-color: #a34b00; --neon-color: #ef6c00;">', unsafe_allow_html=True)
-        if st.button("🌐\nAbout\nWebsite", key="main_web_btn"):
+        st.markdown('<div class="button-card-wrapper">', unsafe_allow_html=True)
+        # Custom HTML Circle Layers (Orange)
+        st.markdown('<div class="spinning-neon-ring" style="--neon-color: #ef6c00;"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="inner-disk-core" style="--bg-color: #a34b00; --neon-color: #ef6c00;"><div class="emoji">🌐</div><div class="label-txt">About<br>Website</div></div>', unsafe_allow_html=True)
+        # Overlay Transparent Active Clicker
+        if st.button("Click3", key="act_web"):
             switch_page("aboutweb")
         st.markdown('</div>', unsafe_allow_html=True)
         
