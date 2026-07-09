@@ -9,24 +9,16 @@ st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", l
 if "page" not in st.session_state:
     st.session_state.page = "landing"
 
-# Check URL query parameters for button clicks to avoid layout decoupling
-query_params = st.query_params
-if "nav_target" in query_params:
-    target = query_params["nav_target"]
-    st.query_params.clear()
-    st.session_state.page = target
-    st.rerun()
-
 def switch_page(page_name):
     st.session_state.page = page_name
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: LANDING PAGE (PERFECTLY ALIGNED SINGLE ROW CIRCUITS)
+# 🎯 PAGE 1: LANDING PAGE (NATIVE BUTTONS TRANSFORMED TO GLOWING ROW CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Clean and fixed CSS layout to ensure everything aligns perfectly in a single row
+    # Super strong CSS selectors to force native Streamlit buttons into glowing row circles
     st.markdown("""
     <style>
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
@@ -35,14 +27,14 @@ if st.session_state.page == "landing":
     }
     
     .block-container {
-        padding-top: 4rem !important;
+        padding-top: 3.5rem !important;
         padding-bottom: 0rem !important;
     }
 
     /* Centered Header Layout Setup */
     .portal-header-box {
         text-align: center;
-        margin-bottom: 60px !important;
+        margin-bottom: 55px !important;
         width: 100%;
     }
     
@@ -62,64 +54,109 @@ if st.session_state.page == "landing":
         margin-top: 6px;
     }
 
-    /* Fixed Row Container forcing a clean horizontal alignment side-by-side */
-    .custom-buttons-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 60px;
-        width: 100%;
-        max-width: 1000px;
-        margin: 0 auto;
+    /* Force Streamlit horizontal block layout to behave like a strict aligned row */
+    [data-testid="stHorizontalBlock"] {
+        max-width: 900px !important;
+        margin: 0 auto !important;
+        gap: 50px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
 
-    /* Custom Glowing Circle Component acting directly as the button click zone */
-    .glow-circle-button {
+    [data-testid="column"] {
+        width: 180px !important;
+        flex: none !important;
+    }
+
+    /* Custom Unique Key Wrapper styling to host spinning neon borders and inside fill glows */
+    .circle-node-blue, .circle-node-green, .circle-node-orange {
         position: relative;
-        width: 180px;
-        height: 180px;
+        width: 170px;
+        height: 170px;
         border-radius: 50%;
-        background: var(--glow-bg-fill) !important;
-        box-shadow: inset 0 0 25px var(--glow-bg-fill), 0 0 10px rgba(0,0,0,0.05);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none !important;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        border: 2px solid var(--neon-stroke-color); /* Safe fallback stroke */
+        margin: 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    .glow-circle-button:hover {
-        transform: scale(1.08);
-        box-shadow: inset 0 0 35px var(--glow-bg-fill), 0 0 25px var(--glow-bg-fill);
-    }
+    /* Specific continuous background tinting animations */
+    .circle-node-blue { background: rgba(28, 131, 225, 0.12) !important; box-shadow: inset 0 0 20px rgba(28, 131, 225, 0.2); }
+    .circle-node-green { background: rgba(46, 125, 50, 0.12) !important; box-shadow: inset 0 0 20px rgba(46, 125, 50, 0.2); }
+    .circle-node-orange { background: rgba(239, 108, 0, 0.12) !important; box-shadow: inset 0 0 20px rgba(239, 108, 0, 0.2); }
 
-    /* Interface Typography inside the circles */
-    .inner-icon {
-        font-size: 32px;
-        margin-bottom: 10px;
+    /* Ring Generators targeting outer layout bounds */
+    .circle-node-blue::before, .circle-node-green::before, .circle-node-orange::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: 50%;
+        padding: 3.5px;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: spinFullCircle 2.5s linear infinite;
         pointer-events: none;
     }
 
-    .inner-text {
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 1.3;
-        text-align: center;
+    .circle-node-blue::before { background: linear-gradient(0deg, transparent, transparent, #1c83e1); }
+    .circle-node-green::before { background: linear-gradient(0deg, transparent, transparent, #2e7d32); }
+    .circle-node-orange::before { background: linear-gradient(0deg, transparent, transparent, #ef6c00); }
+
+    @keyframes spinFullCircle {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Target native Streamlit Button inside our wrappers to completely fit and go circular */
+    div[class^="circle-node-"] div.stButton {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
+    div[class^="circle-node-"] div.stButton > button {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
         color: #222 !important;
-        pointer-events: none;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        line-height: 1.4 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: pre-line !important;
+        cursor: pointer !important;
+        margin: 0 !important;
+        transition: transform 0.2s ease;
+    }
+
+    div[class^="circle-node-"] div.stButton > button:hover {
+        transform: scale(1.05);
+    }
+
+    div[class^="circle-node-"] div.stButton > button:active,
+    div[class^="circle-node-"] div.stButton > button:focus {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
     }
 
     @media (prefers-color-scheme: dark) {
-        .inner-text { color: #ffffff !important; }
+        div[class^="circle-node-"] div.stButton > button { color: #ffffff !important; }
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Rendering Main Portal Headings
+    # Header Construction
     st.markdown("""
     <div class="portal-header-box">
         <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
@@ -127,27 +164,26 @@ if st.session_state.page == "landing":
     </div>
     """, unsafe_allow_html=True)
     
-    # Rendering the perfectly aligned buttons row 
-    st.markdown("""
-    <div class="custom-buttons-row">
+    # 3-Column Layout execution
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown('<div class="circle-node-blue">', unsafe_allow_html=True)
+        if st.button("📝\n\nEasy\nComplaint", key="native_btn_dash"):
+            switch_page("dashboard")
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        <a href="?nav_target=dashboard" target="_self" class="glow-circle-button" style="--neon-stroke-color: #1c83e1; --glow-bg-fill: rgba(28, 131, 225, 0.12);">
-            <div class="inner-icon">📝</div>
-            <div class="inner-text">Easy<br>Complaint</div>
-        </a>
-
-        <a href="?nav_target=aboutme" target="_self" class="glow-circle-button" style="--neon-stroke-color: #2e7d32; --glow-bg-fill: rgba(46, 125, 50, 0.12);">
-            <div class="inner-icon">👤</div>
-            <div class="inner-text">About<br>Me</div>
-        </a>
-
-        <a href="?nav_target=aboutweb" target="_self" class="glow-circle-button" style="--neon-stroke-color: #ef6c00; --glow-bg-fill: rgba(239, 108, 0, 0.12);">
-            <div class="inner-icon">🌐</div>
-            <div class="inner-text">About<br>Website</div>
-        </a>
-
-    </div>
-    """, unsafe_allow_html=True)
+    with col2:
+        st.markdown('<div class="circle-node-green">', unsafe_allow_html=True)
+        if st.button("👤\n\nAbout\nMe", key="native_btn_me"):
+            switch_page("aboutme")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+    with col3:
+        st.markdown('<div class="circle-node-orange">', unsafe_allow_html=True)
+        if st.button("🌐\n\nAbout\nWebsite", key="native_btn_web"):
+            switch_page("aboutweb")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ==============================================================================
