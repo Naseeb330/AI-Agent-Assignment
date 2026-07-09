@@ -36,8 +36,8 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
 
 /* --- COMPLAINT INPUT FIELDS & LABELS COLOR VISIBILITY FIX --- */
 .stTextInput input, .stTextArea textarea, div[data-baseweb="select"] div {
-    color: #111111 !important;
-    background-color: #111111 !important;
+    color: #ffffff !important;
+    background-color: #1c83e1 !important;
     border: 1px solid #1c83e1 !important;
 }
 .stTextInput label, .stTextArea label, .stSelectbox label {
@@ -183,7 +183,7 @@ elif st.session_state.page == "dashboard":
     border: 1px solid #1c83e1 !important;
 }
 .stTextInput label, .stTextArea label, .stSelectbox label {
-    color: #ffffff !important;
+    color: #111111 !important;
     font-weight: 600 !important;
 }
 </style>
