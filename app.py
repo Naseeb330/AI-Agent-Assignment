@@ -14,37 +14,31 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: PURE RE-DESIGNED CLEAN LANDING PAGE
+# 🎯 PAGE 1: PERFECT ROW LANDING PAGE WITH ACCURATE ADJUSTED SPINNING RINGS
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Clean Injectable Styles for Centering and Glow Circles
+    # Clean CSS injection targeting native grid layouts for tight pixel-perfect circle tracking
     st.markdown("""
     <style>
-    html, body, [data-testid="stAppViewContainer"] {
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
         max-height: 100vh !important;
         overflow: hidden !important;
     }
     
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 2.5rem !important;
+        padding-bottom: 0rem !important;
     }
 
-    /* Master layout centering everything directly */
-    .portal-landing-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+    /* Centered Header Layout Setup */
+    .header-centering-box {
         text-align: center;
+        margin-bottom: 40px !important;
+        width: 100%;
     }
     
-    .portal-header-box {
-        margin-bottom: 30px;
-    }
-    
-    .portal-title {
+    .portal-main-title {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -53,132 +47,130 @@ if st.session_state.page == "landing":
         margin: 0;
     }
     
-    .portal-subtitle {
+    .portal-sub-title {
         color: #666;
         font-size: 18px;
         font-weight: 500;
-        margin-top: 5px;
+        margin-top: 6px;
     }
 
-    /* Row wrapper for circles to sit nicely next to each other */
-    .circles-flex-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 60px;
-        margin-top: 20px;
-        flex-wrap: wrap;
+    /* Force Streamlit Columns to stay tightly grouped horizontally */
+    [data-testid="stHorizontalBlock"] {
+        max-width: 860px !important;
+        margin: 0 auto !important;
+        gap: 30px !important;
+        justify-content: center !important;
     }
 
-    /* Interactive Circle Structure */
-    .neon-glowing-circle {
+    /* The exact custom wrapper layer ensuring ring hides precisely behind active clicking spaces */
+    .ring-wrapper-component {
         position: relative;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        text-decoration: none !important;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto !important;
     }
 
-    /* Soft border outline that rotates */
-    .neon-glowing-circle::before {
+    /* Light Dynamic Neon Gird Ring Element */
+    .ring-wrapper-component::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
         border-radius: 50%;
-        padding: 3px; /* Thin line */
-        background: linear-gradient(0deg, transparent, transparent, var(--neon-glow));
+        padding: 3px; /* Exact ring thin line thickness */
+        background: linear-gradient(0deg, transparent, transparent, var(--custom-glow-color));
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
-        animation: rotateRing 2.5s linear infinite;
+        animation: spinSystemRing 2.2s linear infinite;
+        pointer-events: none;
+        z-index: 1;
     }
 
-    @keyframes rotateRing {
+    @keyframes spinSystemRing {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    .neon-glowing-circle:hover {
-        transform: scale(1.08);
-        box-shadow: 0 0 20px var(--neon-glow);
+    /* Overwriting Native Streamlit Button structure inside our circular grid space */
+    div.ring-wrapper-component > div.stButton {
+        position: absolute !important;
+        top: 4px !important;
+        left: 4px !important;
+        width: 152px !important;
+        height: 152px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        z-index: 5 !important;
     }
 
-    .circle-emoji {
-        font-size: 32px;
-        margin-bottom: 5px;
+    div.ring-wrapper-component > div.stButton > button {
+        width: 152px !important;
+        height: 152px !important;
+        border-radius: 50% !important;
+        background: transparent !important; /* Pure transparency inside the circle */
+        border: none !important;
+        box-shadow: none !important;
+        color: #333 !important;
+        font-size: 15px !important;
+        font-weight: bold !important;
+        line-height: 1.3 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: pre-line !important;
+        cursor: pointer !important;
+        transition: transform 0.2s ease;
     }
 
-    .circle-label {
-        font-size: 15px;
-        font-weight: bold;
-        color: #333;
-        line-height: 1.2;
+    div.ring-wrapper-component > div.stButton > button:hover {
+        transform: scale(1.05);
+        background: rgba(255, 255, 255, 0.02) !important;
+        color: var(--custom-glow-color) !important;
+    }
+
+    div.ring-wrapper-component > div.stButton > button:active,
+    div.ring-wrapper-component > div.stButton > button:focus {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
     }
 
     @media (prefers-color-scheme: dark) {
-        .circle-label { color: #fff; }
-    }
-
-    /* Clean Overlay to make standard buttons look like transparent links inside the circles */
-    .invisible-target-btn div.stButton > button {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: transparent !important;
-        width: 150px !important;
-        height: 150px !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        border-radius: 50% !important;
-        z-index: 10 !important;
+        div.ring-wrapper-component > div.stButton > button { color: #fff !important; }
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Render Centered Frame
-    st.markdown('<div class="portal-landing-container">', unsafe_allow_html=True)
-    
+    # Building Centered Title Block
     st.markdown("""
-    <div class="portal-header-box">
-        <div class="portal-title">⚡ WAPDA Smart Complaint Portal</div>
-        <div class="portal-subtitle">AI Powered Electricity Complaint System</div>
+    <div class="header-centering-box">
+        <div class="portal-main-title">⚡ WAPDA Smart Complaint Portal</div>
+        <div class="portal-sub-title">AI Powered Electricity Complaint System</div>
     </div>
     """, unsafe_allow_html=True)
     
-    # We create the clean Row container
-    st.markdown('<div class="circles-flex-row">', unsafe_allow_html=True)
+    # 3-Column Native Stable Horizontal Row Grid
+    col1, col2, col3 = st.columns(3)
     
-    # Circle 1: Easy Complaint
-    st.markdown('<div class="neon-glowing-circle invisible-target-btn" style="--neon-glow: #1c83e1;">', unsafe_allow_html=True)
-    st.markdown('<div class="circle-emoji">📝</div><div class="circle-label">Easy<br>Complaint</div>', unsafe_allow_html=True)
-    if st.button("c1", key="action_c1"):
-        switch_page("dashboard")
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Circle 2: About Me
-    st.markdown('<div class="neon-glowing-circle invisible-target-btn" style="--neon-glow: #2e7d32;">', unsafe_allow_html=True)
-    st.markdown('<div class="circle-emoji">👤</div><div class="circle-label">About<br>Me</div>', unsafe_allow_html=True)
-    if st.button("c2", key="action_c2"):
-        switch_page("aboutme")
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Circle 3: About Website
-    st.markdown('<div class="neon-glowing-circle invisible-target-btn" style="--neon-glow: #ef6c00;">', unsafe_allow_html=True)
-    st.markdown('<div class="circle-emoji">🌐</div><div class="circle-label">About<br>Website</div>', unsafe_allow_html=True)
-    if st.button("c3", key="action_c3"):
-        switch_page("aboutweb")
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True) # End Row
-    st.markdown('</div>', unsafe_allow_html=True) # End Center Layout
+    with col1:
+        st.markdown('<div class="ring-wrapper-component" style="--custom-glow-color: #1c83e1;">', unsafe_allow_html=True)
+        # Text and emojis inside native circular button space
+        if st.button("📝\n\nEasy\nComplaint", key="action_node_dashboard"):
+            switch_page("dashboard")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+    with col2:
+        st.markdown('<div class="ring-wrapper-component" style="--custom-glow-color: #2e7d32;">', unsafe_allow_html=True)
+        if st.button("👤\n\nAbout\nMe", key="action_node_aboutme"):
+            switch_page("aboutme")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+    with col3:
+        st.markdown('<div class="ring-wrapper-component" style="--custom-glow-color: #ef6c00;">', unsafe_allow_html=True)
+        if st.button("🌐\n\nAbout\nWebsite", key="action_node_aboutweb"):
+            switch_page("aboutweb")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ==============================================================================
