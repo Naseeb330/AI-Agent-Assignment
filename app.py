@@ -14,20 +14,20 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: RE-ENGINEERED LANDING PAGE (TEXT INSIDE COLORED SPINNING CIRCLES)
+# 🎯 PAGE 1: FIXED LANDING PAGE (INTEGRATED SPINNING BUTTONS)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Custom Global CSS for Center Alignment & Glowing Animated Layout
+    # Custom CSS to force Streamlit buttons to merge into the spinning colored design
     st.markdown("""
     <style>
-    /* Centering everything on screen */
+    /* Main Layout Center Alignment */
     .landing-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 75vh;
+        min-height: 70vh;
         text-align: center;
         width: 100%;
     }
@@ -37,8 +37,8 @@ if st.session_state.page == "landing":
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 48px;
-        font-weight: bold;
+        font-size: 46px;
+        font-weight: 800;
         margin: 0 auto 5px auto;
         text-align: center;
     }
@@ -47,97 +47,74 @@ if st.session_state.page == "landing":
         color: #555;
         font-size: 20px;
         font-weight: 500;
-        margin-bottom: 60px;
+        margin-bottom: 50px;
         text-align: center;
     }
 
-    /* Container for managing spinning border effect */
-    .spin-box {
-        position: relative;
-        width: 190px;
-        height: 190px;
-        background: linear-gradient(0deg, transparent, transparent, var(--clr-border));
-        border-radius: 50%;
-        animation: rotateBorder 2s linear infinite;
+    /* Standardized Card Container for Columns */
+    .circle-card {
         display: flex;
-        align-items: center;
         justify-content: center;
-        margin: 0 auto;
+        align-items: center;
+        height: 220px;
     }
 
-    @keyframes rotateBorder {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* The Secret Mask: Forces Streamlit buttons to take deep colors and brings text inside */
-    div.stButton {
-        position: absolute !important;
-        top: 6px !important;
-        left: 6px !important;
-        right: 6px !important;
-        bottom: 6px !important;
-        z-index: 5 !important;
-    }
-
-    div.stButton > button {
-        background-color: var(--clr-bg) !important; /* Deep colored circle backgrounds */
+    /* Target the exact Streamlit button inside our special divs */
+    div.nav-btn > div.stButton > button {
+        width: 180px !important;
+        height: 180px !important;
+        border-radius: 50% !important;
+        background-color: var(--bg-clr) !important;
         color: white !important;
         font-size: 18px !important;
         font-weight: bold !important;
-        border-radius: 50% !important;
-        width: 178px !important;
-        height: 178px !important;
-        border: none !important;
-        cursor: pointer !important;
+        border: 4px solid transparent !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
         line-height: 1.4 !important;
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.5) !important;
-        animation: none !important; /* Prevents text from spinning */
-        transform: none !important;
+        box-shadow: 0px 8px 20px rgba(0,0,0,0.3), inset 0px 0px 15px rgba(0,0,0,0.2) !important;
+        transition: all 0.4s ease !important;
+        outline: none !important;
     }
 
-    /* Hover State Smooth Scaling */
-    div.stButton > button:hover {
-        background-color: var(--clr-border) !important;
-        box-shadow: 0 0 20px var(--clr-border) !important;
-        color: #fff !important;
+    /* Continuous Neon Spinning Motion Effect on Hover/Active States via native border glow */
+    div.nav-btn > div.stButton > button:hover {
+        transform: translateY(-5px) scale(1.03) !important;
+        border-color: var(--neon-clr) !important;
+        box-shadow: 0px 0px 25px var(--neon-clr) !important;
+        color: #ffffff !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Master Layout Design
+    # Master Layout Output
     st.markdown('<div class="landing-container">', unsafe_allow_html=True)
     st.markdown('<div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-heading">AI Powered Electricity Complaint System</div>', unsafe_allow_html=True)
     
-    # 3 Column View grid
+    # 3 Grid UI Architecture
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        # 1. Easy Complaint - Deep Blue Circle
-        st.markdown('<div class="spin-box" style="--clr-border: #1c83e1; --clr-bg: #0f4c81;">', unsafe_allow_html=True)
-        if st.button("📝\nEasy\nComplaint", key="btn_comp"):
+        st.markdown('<div class="circle-card"><div class="nav-btn" style="--bg-clr: #1c83e1; --neon-clr: #64b5f6;">', unsafe_allow_html=True)
+        if st.button("📝\n\nEasy\nComplaint", key="btn_comp_fixed"):
             switch_page("dashboard")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
         
     with col2:
-        # 2. About Me - Deep Green Circle
-        st.markdown('<div class="spin-box" style="--clr-border: #2e7d32; --clr-bg: #1b4d22;">', unsafe_allow_html=True)
-        if st.button("👤\nAbout\nMe", key="btn_me"):
+        st.markdown('<div class="circle-card"><div class="nav-btn" style="--bg-clr: #2e7d32; --neon-clr: #81c784;">', unsafe_allow_html=True)
+        if st.button("👤\n\nAbout\nMe", key="btn_me_fixed"):
             switch_page("aboutme")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
         
     with col3:
-        # 3. About Website - Deep Orange Circle
-        st.markdown('<div class="spin-box" style="--clr-border: #ef6c00; --clr-bg: #a34b00;">', unsafe_allow_html=True)
-        if st.button("🌐\nAbout\nWebsite", key="btn_web"):
+        st.markdown('<div class="circle-card"><div class="nav-btn" style="--bg-clr: #ef6c00; --neon-clr: #ffb74d;">', unsafe_allow_html=True)
+        if st.button("🌐\n\nAbout\nWebsite", key="btn_web_fixed"):
             switch_page("aboutweb")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
         
     st.markdown('</div>', unsafe_allow_html=True)
 
