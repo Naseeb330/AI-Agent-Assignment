@@ -136,4 +136,4 @@ Welcome! Please fill the details below.
         outputs=output
     )
 
-demo.inline()
+demo.launch(share=False)
