@@ -27,7 +27,6 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
         
-        # Is prompt mein start aur end dono ke liye strict structures lagaye hain
         prompt = f"""
 You are an AI assistant for Pakistan's electricity complaint system.
 
@@ -47,7 +46,7 @@ Reply professionally based on the specific complaint type provided.
 
 STARTING RULE: You MUST start your response with a professional greeting addressing the customer by their name, for example: "Dear {name}," followed by a short acknowledgment sentence on a new line.
 
-FORMATTING RULE: After the greeting, leave a line break and list these exact sections. Each section MUST start on a brand NEW LINE:
+FORMATTING RULE: After the greeting, leave a line break and list these exact sections. Each section MUST start on a brand NEW LINE with double spacing:
 - **Complaint Status:** [Details]
 - **Concerned Company:** [Details]
 - **Priority:** [Details]
@@ -69,7 +68,11 @@ By: Naseeb U Rahman
             model="gemini-2.5-flash",
             contents=prompt
         )
-        return response.text
+        
+        # --- MAGIC TRICK: Force Streamlit to respect all newlines from Gemini ---
+        clean_text = response.text.replace("\n", "\n\n")
+        return clean_text
+        
     except Exception as e:
         return f"Maazrat, koi takneeki masla aa gaya hai: {str(e)}"
 
@@ -106,7 +109,7 @@ with col2:
             st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
         else:
             result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
-            st.info(result)
+            st.markdown(result) # Gumrah text ko markdown format mein thik tarah dikhane k liye st.markdown use kiya
 
 # --- FOOTER ---
 st.markdown("""
