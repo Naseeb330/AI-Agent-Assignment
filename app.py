@@ -1,6 +1,6 @@
-import streamlit as st
 import os
-import google.generativeai as genai
+import streamlit as st
+from google import genai
 
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
@@ -27,7 +27,7 @@ def switch_page(page_name):
 if st.session_state.page == "landing":
     
 # CRITICAL: No spaces at the start of any line inside st.markdown to prevent code-block escaping
-    st.markdown("""
+   st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
     max-height: 100vh !important;
@@ -136,73 +136,28 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockCo
 </style>
 """, unsafe_allow_html=True)
 
-    # Header Render
-    st.markdown("""
-<div class="portal-header-box">
-    <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
-    <div class="portal-sub-heading">AI Powered Electricity Complaint System</div>
-</div>
-""", unsafe_allow_html=True)
-    
-    # Circles Interface Row Render (With explicit ring classes applied)
-    st.markdown("""
-<div class="custom-circles-row">
-    <a href="?nav=dashboard" target="_self" class="glowing-circle-btn blue-ring" style="--bg-fill-color: rgba(28, 131, 225, 0.12);">
-        <div class="inner-circle-icon">📝</div>
-        <div class="inner-circle-text">Easy<br>Complaint</div>
-    </a>
-    <a href="?nav=aboutme" target="_self" class="glowing-circle-btn green-ring" style="--bg-fill-color: rgba(46, 125, 50, 0.12);">
-        <div class="inner-circle-icon">👤</div>
-        <div class="inner-circle-text">About<br>Me</div>
-    </a>
-    <a href="?nav=aboutweb" target="_self" class="glowing-circle-btn orange-ring" style="--bg-fill-color: rgba(239, 108, 0, 0.12);">
-        <div class="inner-circle-icon">🌐</div>
-        <div class="inner-circle-text">About<br>Website</div>
-    </a>
-</div>
-""", unsafe_allow_html=True)
-
 
 # ==============================================================================
 # 💻 PAGE 2: MAIN COMPLAINT DASHBOARD
 # ==============================================================================
-# --- 1. AI Complaint Function (Top par define karein) ---
-def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
-    api_key_fresh = os.environ.get("GEMINI_API_KEY")
-    if not api_key_fresh: return "Error: API Key nahi mili!"
-    try:
-        client_fresh = genai.Client(api_key=api_key_fresh)
-        prompt = f"Customer: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally."
-        # Correct model name
-        response = client_fresh.models.generate_content(model="gemini-1.5-flash", contents=prompt)
-        return response.text
-    except Exception as e: return f"Maazrat: {str(e)}"
-
-# --- 2. Page Switch Function ---
-def switch_page(page_name):
-    st.session_state.page = page_name
-    st.rerun()
-
-# --- 3. Initialize Session State ---
-if 'page' not in st.session_state:
-    st.session_state.page = "landing"
-
-# --- 4. Page Logic (if/elif structure) ---
-if st.session_state.page == "landing":
-    st.title("⚡ WAPDA Complaint Portal")
-    if st.button("Go to Dashboard"):
-        switch_page("dashboard")
-
-# AB YAHAN 'elif' sahi kaam karega kyunki upar 'if' majood hai
 elif st.session_state.page == "dashboard":
     top_col1, top_col2 = st.columns([8, 2])
     with top_col1:
         st.markdown("<h2 style='margin:0; color:#1c83e1;'>⚡ Dashboard Control Panel</h2>", unsafe_allow_html=True)
     with top_col2:
-        if st.button("🏠 Home"): switch_page("landing")
-    
-    st.markdown("<hr>", unsafe_allow_html=True)
-    
+        if st.button("🏠 Go Back Home", use_container_width=True): switch_page("landing")
+    st.markdown("<hr style='margin-top:5px; margin-bottom:20px;'>", unsafe_allow_html=True)
+
+    def register_complaint(name, consumer_id, phone, city, complaint_type, complaint):
+        api_key_fresh = os.environ.get("GEMINI_API_KEY")
+        if not api_key_fresh: return "Error: Streamlit secrets mein GEMINI_API_KEY nahi mili!"
+        try:
+            client_fresh = genai.Client(api_key=api_key_fresh)
+            prompt = f"You are an AI assistant for Pakistan's electricity complaint system. Customer Details: Name: {name}, ID: {consumer_id}, Phone: {phone}, City: {city}. Type: {complaint_type}. Complaint: {complaint}. Reply professionally. Heading and description text on SAME line. Double spacing BETWEEN sections. Sincerely, AI Assistant, By: Naseeb U Rahman"
+            response = client_fresh.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+            return response.text
+        except Exception as e: return f"Maazrat: {str(e)}"
+
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("📋 Consumer Form")
@@ -210,21 +165,17 @@ elif st.session_state.page == "dashboard":
         consumer_id_input = st.text_input("🆔 Consumer ID")
         phone_input = st.text_input("📞 Mobile Number")
         city_input = st.selectbox("City", options=["Quetta", "Lahore", "Islamabad", "Karachi"])
-        complaint_type_input = st.selectbox("Type", options=[
-            "Power Outage", "Low Voltage", "Transformer Breakdown", "Billing Issues"
-        ])
-        complaint_input = st.text_area("Complaint Details", height=150)
+        complaint_type_input = st.selectbox("Type", options=["Power Outage", "Low Voltage", "High Voltage"])
+        complaint_input = st.text_area("Complaint", height=150)
         submit = st.button("📤 Register Complaint", use_container_width=True)
 
     with col2:
         st.subheader("📋 Complaint Status")
         if submit:
-            if name_input.strip() == "" or consumer_id_input.strip() == "":
-                st.error("Name & ID are required.")
+            if name_input.strip() == "" or consumer_id_input.strip() == "": st.error("Name & ID are required.")
             else:
-                with st.spinner("Processing..."):
-                    result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
-                    st.markdown(result)
+                with st.spinner("Processing..."): result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
+                st.markdown(result)
 
 
 # ==============================================================================
@@ -240,11 +191,11 @@ elif st.session_state.page == "aboutme":
     
     st.markdown("""
     <div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; text-align: center; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">
-        <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold;">👨‍💻 About the Developer</h1>
+        <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold;">👨💻 About the Developer</h1>
         <p style="color: #888; font-size: 18px; font-style: italic; margin-bottom: 25px;">"Engineering Smarter Infrastructure with AI"</p>
         <hr style="border-color: #2e7d32; width: 50%; margin: 0 auto 25px auto;">
         <table style="width: 100%; font-size: 18px; color: white; border-collapse: collapse; text-align: left;">
-            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb U Rahman</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Role:</td><td style="padding: 12px; color: #ddd;">AI Assistant Core Developer</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">Student of Electrical Engineering Department</td></tr>
             <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Institute:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
@@ -256,7 +207,6 @@ elif st.session_state.page == "aboutme":
         </p>
     </div>
     """, unsafe_allow_html=True)
-
 
 # ==============================================================================
 # 🌐 PAGE 4: ABOUT WEBSITE
