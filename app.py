@@ -27,7 +27,7 @@ def register_complaint(name, consumer_id, phone, city, complaint_type, complaint
     try:
         client_fresh = genai.Client(api_key=api_key_fresh)
         
-        # New prompt with strict newline and formatting rules
+        # Is prompt mein start aur end dono ke liye strict structures lagaye hain
         prompt = f"""
 You are an AI assistant for Pakistan's electricity complaint system.
 
@@ -45,19 +45,19 @@ Complaint:
 
 Reply professionally based on the specific complaint type provided.
 
-FORMATTING RULE: You MUST start every section on a brand NEW LINE. Use double line breaks or bullet points so it is completely clean and scannable.
+STARTING RULE: You MUST start your response with a professional greeting addressing the customer by their name, for example: "Dear {name}," followed by a short acknowledgment sentence on a new line.
 
-Please include these exact sections, each starting on a new line:
+FORMATTING RULE: After the greeting, leave a line break and list these exact sections. Each section MUST start on a brand NEW LINE:
 - **Complaint Status:** [Details]
 - **Concerned Company:** [Details]
 - **Priority:** [Details]
 - **Estimated Time:** [Details]
 - **Recommendation:** [Details]
 
-Instructions for closing:
-1. Write a unique, professional closing sentence that matches the complaint type (e.g., if it's billing, mention resolving billing discrepancies; if it's outage, mention restoring power). Do NOT repeat the exact same sentence for different types of complaints.
+CLOSING RULE:
+1. Write a unique, professional closing sentence that matches the complaint type. Do NOT repeat the exact same closing sentence for different types of complaints.
 2. Put a double line break after the closing sentence.
-3. At the very end, you MUST sign off in separate lines exactly like this, making sure your name is on its own separate line:
+3. At the very end, you MUST sign off in separate lines exactly like this (ensure your name is on its own separate line):
 
 Sincerely,
 
@@ -79,21 +79,21 @@ col1, col2 = st.columns(2)
 # --- LEFT COLUMN (Form Inputs) ---
 with col1:
     st.subheader("📋 Consumer Form")
-    name = st.text_input("👤 Consumer Name")
-    consumer_id = st.text_input("🆔 Consumer ID")
-    phone = st.text_input("📞 Mobile Number")
+    name_input = st.text_input("👤 Consumer Name")
+    consumer_id_input = st.text_input("🆔 Consumer ID")
+    phone_input = st.text_input("📞 Mobile Number")
     
-    city = st.selectbox(
+    city_input = st.selectbox(
         "🏙️ City",
         options=["Quetta", "Lahore", "Islamabad", "Karachi", "Peshawar", "Multan", "Hyderabad", "Sukkur"]
     )
     
-    complaint_type = st.selectbox(
+    complaint_type_input = st.selectbox(
         "⚡ Complaint Type",
         options=["Power Outage", "Low Voltage", "High Voltage", "Billing Issue", "Meter Fault", "Transformer Fault"]
     )
     
-    complaint = st.text_area("📝 Complaint", height=150)
+    complaint_input = st.text_area("📝 Complaint", height=150)
     
     submit = st.button("📤 Register Complaint", use_container_width=True)
 
@@ -102,10 +102,10 @@ with col2:
     st.subheader("📋 Complaint Status")
     
     if submit:
-        if name.strip() == "" or consumer_id.strip() == "":
+        if name_input.strip() == "" or consumer_id_input.strip() == "":
             st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
         else:
-            result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
+            result = register_complaint(name_input, consumer_id_input, phone_input, city_input, complaint_type_input, complaint_input)
             st.info(result)
 
 # --- FOOTER ---
