@@ -2,7 +2,7 @@ from google import genai
 import os
 import streamlit as st
 
-# --- PAGE CONFIG ---
+# --- PAGE CONFIG (Lock Viewport) ---
 st.set_page_config(page_title="WAPDA Smart Complaint Portal", page_icon="⚡", layout="wide")
 
 # --- SESSION STATE (Page Router) ---
@@ -14,11 +14,11 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: PERFECT ROW LANDING PAGE WITH ACCURATE ADJUSTED SPINNING RINGS
+# 🎯 PAGE 1: PERFECT ROW LANDING PAGE (RINGS LOCKED EXACTLY AROUND LIGHT BUTTONS)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Clean CSS injection targeting native grid layouts for tight pixel-perfect circle tracking
+    # Advanced CSS Injection to combine spinning rings directly onto the native button borders
     st.markdown("""
     <style>
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMainSpaceBlockContainer"] {
@@ -31,14 +31,14 @@ if st.session_state.page == "landing":
         padding-bottom: 0rem !important;
     }
 
-    /* Centered Header Layout Setup */
-    .header-centering-box {
+    /* Top Title Header Centering Block */
+    .portal-title-wrapper {
         text-align: center;
-        margin-bottom: 40px !important;
+        margin-bottom: 45px !important;
         width: 100%;
     }
     
-    .portal-main-title {
+    .portal-main-heading {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -47,67 +47,78 @@ if st.session_state.page == "landing":
         margin: 0;
     }
     
-    .portal-sub-title {
+    .portal-sub-heading {
         color: #666;
         font-size: 18px;
         font-weight: 500;
         margin-top: 6px;
     }
 
-    /* Force Streamlit Columns to stay tightly grouped horizontally */
+    /* FORCE STREAMLIT GRID TO STAY IN A PERFECT ROW HIERARCHY */
     [data-testid="stHorizontalBlock"] {
-        max-width: 860px !important;
+        max-width: 850px !important;
         margin: 0 auto !important;
-        gap: 30px !important;
+        gap: 40px !important;
+        display: flex !important;
+        flex-direction: row !important;
         justify-content: center !important;
+        align-items: center !important;
     }
 
-    /* The exact custom wrapper layer ensuring ring hides precisely behind active clicking spaces */
-    .ring-wrapper-component {
+    [data-testid="column"] {
+        width: 160px !important;
+        flex: none !important;
+    }
+
+    /* Master Circular Container Box */
+    .unified-ring-container {
         position: relative;
-        width: 160px;
-        height: 160px;
+        width: 155px;
+        height: 155px;
         margin: 0 auto !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    /* Light Dynamic Neon Gird Ring Element */
-    .ring-wrapper-component::before {
+    /* Pure Dynamic Border Light Ring Rotating Directly Around the Target Box */
+    .unified-ring-container::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
         border-radius: 50%;
-        padding: 3px; /* Exact ring thin line thickness */
-        background: linear-gradient(0deg, transparent, transparent, var(--custom-glow-color));
+        padding: 3px; /* Exact thin line width */
+        background: linear-gradient(0deg, transparent, transparent, var(--neon-accent-color));
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
-        animation: spinSystemRing 2.2s linear infinite;
+        animation: spinSystemAround 2.2s linear infinite;
         pointer-events: none;
         z-index: 1;
     }
 
-    @keyframes spinSystemRing {
+    @keyframes spinSystemAround {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Overwriting Native Streamlit Button structure inside our circular grid space */
-    div.ring-wrapper-component > div.stButton {
-        position: absolute !important;
-        top: 4px !important;
-        left: 4px !important;
-        width: 152px !important;
-        height: 152px !important;
+    /* Convert Streamlit Native Element Container into a perfect fitting circle */
+    div.unified-ring-container > div.stButton {
+        width: 145px !important;
+        height: 145px !important;
         margin: 0px !important;
         padding: 0px !important;
-        z-index: 5 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    div.ring-wrapper-component > div.stButton > button {
-        width: 152px !important;
-        height: 152px !important;
+    /* Modify Button to be completely Transparent, Light, and Circular inside the rotating ring */
+    div.unified-ring-container > div.stButton > button {
+        width: 145px !important;
+        height: 145px !important;
         border-radius: 50% !important;
-        background: transparent !important; /* Pure transparency inside the circle */
+        background: transparent !important; /* light/no color background */
         border: none !important;
         box-shadow: none !important;
         color: #333 !important;
@@ -121,54 +132,54 @@ if st.session_state.page == "landing":
         white-space: pre-line !important;
         cursor: pointer !important;
         transition: transform 0.2s ease;
+        margin: 0 !important;
     }
 
-    div.ring-wrapper-component > div.stButton > button:hover {
+    div.unified-ring-container > div.stButton > button:hover {
         transform: scale(1.05);
-        background: rgba(255, 255, 255, 0.02) !important;
-        color: var(--custom-glow-color) !important;
+        background: rgba(0, 0, 0, 0.02) !important;
     }
 
-    div.ring-wrapper-component > div.stButton > button:active,
-    div.ring-wrapper-component > div.stButton > button:focus {
+    div.unified-ring-container > div.stButton > button:active,
+    div.unified-ring-container > div.stButton > button:focus {
         background: transparent !important;
         box-shadow: none !important;
         border: none !important;
     }
 
     @media (prefers-color-scheme: dark) {
-        div.ring-wrapper-component > div.stButton > button { color: #fff !important; }
+        div.unified-ring-container > div.stButton > button { color: #fff !important; }
+        div.unified-ring-container > div.stButton > button:hover { background: rgba(255, 255, 255, 0.02) !important; }
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Building Centered Title Block
+    # Header Block Insertion
     st.markdown("""
-    <div class="header-centering-box">
-        <div class="portal-main-title">⚡ WAPDA Smart Complaint Portal</div>
-        <div class="portal-sub-title">AI Powered Electricity Complaint System</div>
+    <div class="portal-title-wrapper">
+        <div class="portal-main-heading">⚡ WAPDA Smart Complaint Portal</div>
+        <div class="portal-sub-heading">AI Powered Electricity Complaint System</div>
     </div>
     """, unsafe_allow_html=True)
     
-    # 3-Column Native Stable Horizontal Row Grid
+    # Safe Column Elements forcing absolute Single Row Architecture
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="ring-wrapper-component" style="--custom-glow-color: #1c83e1;">', unsafe_allow_html=True)
-        # Text and emojis inside native circular button space
-        if st.button("📝\n\nEasy\nComplaint", key="action_node_dashboard"):
+        st.markdown('<div class="unified-ring-container" style="--neon-accent-color: #1c83e1;">', unsafe_allow_html=True)
+        if st.button("📝\n\nEasy\nComplaint", key="dash_action_node"):
             switch_page("dashboard")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col2:
-        st.markdown('<div class="ring-wrapper-component" style="--custom-glow-color: #2e7d32;">', unsafe_allow_html=True)
-        if st.button("👤\n\nAbout\nMe", key="action_node_aboutme"):
+        st.markdown('<div class="unified-ring-container" style="--neon-accent-color: #2e7d32;">', unsafe_allow_html=True)
+        if st.button("👤\n\nAbout\nMe", key="me_action_node"):
             switch_page("aboutme")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with col3:
-        st.markdown('<div class="ring-wrapper-component" style="--custom-glow-color: #ef6c00;">', unsafe_allow_html=True)
-        if st.button("🌐\n\nAbout\nWebsite", key="action_node_aboutweb"):
+        st.markdown('<div class="unified-ring-container" style="--neon-accent-color: #ef6c00;">', unsafe_allow_html=True)
+        if st.button("🌐\n\nAbout\nWebsite", key="web_action_node"):
             switch_page("aboutweb")
         st.markdown('</div>', unsafe_allow_html=True)
 
