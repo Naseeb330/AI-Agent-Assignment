@@ -250,8 +250,10 @@ elif st.session_state.page == "aboutme":
 
     image_filename = "my_picture.jpg"
 
+    # Profile Card Card Container
     st.markdown('<div style="background-color: #11141a; border: 2px solid #2e7d32; padding: 35px; border-radius: 20px; max-width: 700px; margin: 0 auto; box-shadow: 0px 0px 25px rgba(46,125,50,0.3);">', unsafe_allow_html=True)
 
+    # Image column layout without breaking markdown strings
     img_col1, img_col2, img_col3 = st.columns([3, 2, 3])
     with img_col2:
         if os.path.exists(image_filename):
@@ -259,6 +261,7 @@ elif st.session_state.page == "aboutme":
         else:
             st.markdown('<div style="text-align:center; font-size:60px; background:#222; border-radius:50%; width:120px; height:120px; line-height:120px; margin:0 auto; border:3px solid #2e7d32; color:#2e7d32;">👤</div>', unsafe_allow_html=True)
 
+    # Text content combined tightly inside one single block to avoid raw code printing
     st.markdown("""<div style="text-align: center; margin-top: 15px;">
 <h1 style="color: #2e7d32; margin-bottom: 5px; font-weight: bold; font-size: 32px;">👨‍💻 About the Developer</h1>
 <p style="color: #888; font-size: 18px; font-style: italic; margin-bottom: 25px;">"Engineering Smarter Infrastructure with AI"</p>
@@ -268,7 +271,6 @@ elif st.session_state.page == "aboutme":
 <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32; width: 35%;">Name:</td><td style="padding: 12px; color: #ddd;">Naseeb Marri (Naseeb U Rahman)</td></tr>
 <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Role:</td><td style="padding: 12px; color: #ddd;">AI Assistant Core Developer</td></tr>
 <tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Department:</td><td style="padding: 12px; color: #ddd;">Student of Electrical Engineering Department</td></tr>
-<tr style="border-bottom: 1px solid #222;"><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Institute:</td><td style="padding: 12px; color: #ddd;">BUITEMS, QUETTA</td></tr>
 <tr><td style="padding: 12px; font-weight: bold; color: #2e7d32;">Domain Interest:</td><td style="padding: 12px; color: #ddd;">Smart Grid Systems, Automation, Power Engineering & AI Integrations</td></tr>
 </table>
 <br>
@@ -276,7 +278,6 @@ elif st.session_state.page == "aboutme":
 ⚡ Combining the core principles of Electrical Engineering with modern Artificial Intelligence to build automated utility solutions for Pakistan.
 </p>
 </div>""", unsafe_allow_html=True)
-
 # ==============================================================================
 # 🌐 PAGE 4: ABOUT WEBSITE
 # ==============================================================================
