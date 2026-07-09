@@ -191,8 +191,18 @@ elif st.session_state.page == "dashboard":
         consumer_id_input = st.text_input("🆔 Consumer ID")
         phone_input = st.text_input("📞 Mobile Number")
         city_input = st.selectbox("City", options=["Quetta", "Lahore", "Islamabad", "Karachi"])
-        complaint_type_input = st.selectbox("Type", options=["Power Outage", "Low Voltage", "High Voltage"])
-        complaint_input = st.text_area("Complaint", height=150)
+        # 🌟 NEW EXPANDED WAPDA COMPLAINT OPTIONS
+        complaint_type_input = st.selectbox("Type", options=[
+            "Power Outage (Load Shedding / Line Fault)", 
+            "Low Voltage / High Voltage Fluctuations",
+            "Transformer Breakdown / Oil Leakage / Sparking", 
+            "Defective Meter / Fast Running Meter / Screen Blank", 
+            "Billing Issues (Wrong Reading / Double Charging / Installments Request)",
+            "Power Theft Reporting (Kunda system / Illegal bypass)",
+            "New Connection Delay / Pole Installation Request"
+        ])
+        
+        complaint_input = st.text_area("Complaint Details", height=150)
         submit = st.button("📤 Register Complaint", use_container_width=True)
 
     with col2:
