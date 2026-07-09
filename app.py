@@ -14,105 +14,137 @@ def switch_page(page_name):
     st.rerun()
 
 # ==============================================================================
-# 🎯 PAGE 1: FIXED LANDING PAGE (INTEGRATED SPINNING BUTTONS)
+# 🎯 PAGE 1: FIXED LANDING PAGE (COMPACT & SPINNING CIRCLES)
 # ==============================================================================
 if st.session_state.page == "landing":
     
-    # Custom CSS to force Streamlit buttons to merge into the spinning colored design
+    # Custom CSS to eliminate scroll space and seamlessly bind spinning borders to buttons
     st.markdown("""
     <style>
-    /* Main Layout Center Alignment */
+    /* Remove default padding and eliminate vertical scroll spaces */
+    .block-container {
+        padding-top: 2rem !important;
+        padding-bottom: 0rem !important;
+    }
+    
     .landing-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 70vh;
+        margin: 0 auto;
+        padding: 0px;
         text-align: center;
         width: 100%;
     }
     
-    /* Centralized Gradient Title */
+    /* Centralized Title Header */
     .main-heading {
         background: linear-gradient(45deg, #1c83e1, #2e7d32, #ef6c00);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 46px;
+        font-size: 42px;
         font-weight: 800;
-        margin: 0 auto 5px auto;
-        text-align: center;
+        margin-bottom: 2px;
     }
     
     .sub-heading {
         color: #555;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
-        margin-bottom: 50px;
-        text-align: center;
+        margin-bottom: 40px;
     }
 
-    /* Standardized Card Container for Columns */
-    .circle-card {
+    /* Spinning Box Frame containing the actual active button element */
+    .spin-container {
+        position: relative;
+        width: 170px;
+        height: 170px;
+        background: linear-gradient(0deg, transparent, transparent, var(--neon-clr));
+        border-radius: 50%;
+        animation: rotateRing 2s linear infinite;
         display: flex;
-        justify-content: center;
         align-items: center;
-        height: 220px;
+        justify-content: center;
+        margin: 0 auto;
     }
 
-    /* Target the exact Streamlit button inside our special divs */
-    div.nav-btn > div.stButton > button {
-        width: 180px !important;
-        height: 180px !important;
+    @keyframes rotateRing {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Target the inner element wrapper directly to maintain clean UI boundaries */
+    div.nav-wrapper {
+        position: relative;
+        width: 170px;
+        height: 170px;
+    }
+
+    div.nav-wrapper > div.stButton {
+        position: absolute !important;
+        top: 5px !important;
+        left: 5px !important;
+        right: 5px !important;
+        bottom: 5px !important;
+        z-index: 5 !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
+    /* Force the Streamlit button to fill the center space completely */
+    div.nav-wrapper > div.stButton > button {
+        width: 160px !important;
+        height: 160px !important;
         border-radius: 50% !important;
         background-color: var(--bg-clr) !important;
         color: white !important;
-        font-size: 18px !important;
+        font-size: 16px !important;
         font-weight: bold !important;
-        border: 4px solid transparent !important;
+        border: none !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        line-height: 1.4 !important;
-        box-shadow: 0px 8px 20px rgba(0,0,0,0.3), inset 0px 0px 15px rgba(0,0,0,0.2) !important;
-        transition: all 0.4s ease !important;
-        outline: none !important;
+        line-height: 1.3 !important;
+        box-shadow: inset 0px 0px 12px rgba(0,0,0,0.4) !important;
+        animation: none !important; /* Keeps text stable while background spins */
+        transition: all 0.3s ease-in-out !important;
     }
 
-    /* Continuous Neon Spinning Motion Effect on Hover/Active States via native border glow */
-    div.nav-btn > div.stButton > button:hover {
-        transform: translateY(-5px) scale(1.03) !important;
-        border-color: var(--neon-clr) !important;
-        box-shadow: 0px 0px 25px var(--neon-clr) !important;
-        color: #ffffff !important;
+    /* Smooth Interaction Scaling */
+    div.nav-wrapper > div.stButton > button:hover {
+        background-color: var(--neon-clr) !important;
+        box-shadow: 0px 0px 15px var(--neon-clr) !important;
+        transform: scale(1.02);
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Master Layout Output
+    # UI Output Execution
     st.markdown('<div class="landing-container">', unsafe_allow_html=True)
     st.markdown('<div class="main-heading">⚡ WAPDA Smart Complaint Portal</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-heading">AI Powered Electricity Complaint System</div>', unsafe_allow_html=True)
     
-    # 3 Grid UI Architecture
+    # Grid structure columns
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="circle-card"><div class="nav-btn" style="--bg-clr: #1c83e1; --neon-clr: #64b5f6;">', unsafe_allow_html=True)
-        if st.button("📝\n\nEasy\nComplaint", key="btn_comp_fixed"):
+        st.markdown('<div class="nav-wrapper"><div class="spin-container" style="--bg-clr: #0f4c81; --neon-clr: #1c83e1;">', unsafe_allow_html=True)
+        if st.button("📝\nEasy\nComplaint", key="btn_c"):
             switch_page("dashboard")
         st.markdown('</div></div>', unsafe_allow_html=True)
         
     with col2:
-        st.markdown('<div class="circle-card"><div class="nav-btn" style="--bg-clr: #2e7d32; --neon-clr: #81c784;">', unsafe_allow_html=True)
-        if st.button("👤\n\nAbout\nMe", key="btn_me_fixed"):
+        st.markdown('<div class="nav-wrapper"><div class="spin-container" style="--bg-clr: #1b4d22; --neon-clr: #2e7d32;">', unsafe_allow_html=True)
+        if st.button("👤\nAbout\nMe", key="btn_m"):
             switch_page("aboutme")
         st.markdown('</div></div>', unsafe_allow_html=True)
         
     with col3:
-        st.markdown('<div class="circle-card"><div class="nav-btn" style="--bg-clr: #ef6c00; --neon-clr: #ffb74d;">', unsafe_allow_html=True)
-        if st.button("🌐\n\nAbout\nWebsite", key="btn_web_fixed"):
+        st.markdown('<div class="nav-wrapper"><div class="spin-container" style="--bg-clr: #a34b00; --neon-clr: #ef6c00;">', unsafe_allow_html=True)
+        if st.button("🌐\nAbout\nWebsite", key="btn_w"):
             switch_page("aboutweb")
         st.markdown('</div></div>', unsafe_allow_html=True)
         
@@ -220,9 +252,9 @@ elif st.session_state.page == "aboutweb":
 # 👣 FOOTER
 # ==============================================================================
 st.markdown("""
-<br><br><br>
+<br><br>
 <hr>
-<div style="text-align:center; color:#555; padding:10px;">
+<div style="text-align:center; color:#555; padding:5px;">
     <p style="font-size:14px; font-weight:bold; margin:0;">
         ⚡ AI Assistant: Pakistan's Electricity Complaint System
     </p>
