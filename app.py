@@ -95,8 +95,5 @@ with col2:
         if name.strip() == "" or consumer_id.strip() == "":
             st.error("Meharbani karke Consumer Name aur ID zaroor likhein.")
         else:
-            with st.spinner("WAPDA Agent aapki shikayat ka jaiza le raha hai..."):
                 result = register_complaint(name, consumer_id, phone, city, complaint_type, complaint)
             st.info(result)
-    else:
-        st.write("Aapka response yahan nazar aayega jab aap form submit karenge.")
